@@ -1,1 +1,3770 @@
+--[[
+  ______               _ _ _                
+ |  ____|             | (_) |               
+ | |__  __  _____ __ _| |_| |__  _   _ _ __ 
+ |  __| \ \/ / __/ _` | | | '_ \| | | | '__|
+ | |____ >  < (_| (_| | | | |_) | |_| | |   
+ |______/_/\_\___\__,_|_|_|_.__/ \__,_|_|   
 
+]]
+
+getgenv().Excalibur = { -- no one compares they alllllllllllllllllllllllllllllllllllllllllll skids
+    ["Options"] = { -- // Misc
+		["Key"] = ("key"), -- // Key will be here when I have luarmor
+        ["Intro"] = (false), -- // Shows intro
+        ["Electron"] = (true), -- // Adds electron support
+        ["OptimizeUWP"] = (true), -- // Optimizes UWP (might make game look shitty can change that tho)
+        ["MiniGui"] = (false), -- // You can change stuff and stuff so stuff
+        ["AntiLog"] = (false), -- // When in F9 logs there is no errors
+        ["AutoLowGfx"] = (false), -- // Self explanatory
+        ["MuteBoombox"] = (true), -- // Mutes boombox in a loop
+        ["RemoveSeats"] = (true), -- // Removes seats
+		["Shaders"] (true), -- // Self explanatory
+        ["GetInfo"] = (false), -- // Gets how fast the script loads in and stuff have false because all notfications arent implemented (like lrm_tiumeleft and stuff)
+        ["Notifications"] = (false), -- // Enables notifications
+    },
+    ["PanicMode"] = { -- // Disables everything when you press a keybind
+        ["Enabled"] = (true), -- // Enables panicmode
+        ["KeyBind"] = ("P"), -- // Keybind to disable everything
+    },
+    ["ModDetection"] = { -- // Detects if a mod is in the server
+        ["Enabled"] = (true), -- // Enables mod detection
+        ["Message"] = ("Mod / Admin detected"), -- // What is says (has [EXCALIBUR] before it)
+        ["Delay"] = (3), -- // The delay it kicks or sends a notification to make it more legit
+        ["Rank"] = (200), -- // Checks if the person in the server is this rank or above in the group
+        ["Method"] = ("Kick"), -- // Kick, Notification
+        ["LegitKick"] = (true), -- // Makes it llegit
+    },
+    ["Silent"] = { -- // Silentaim options auto resolver btw same with cam
+        ["Enabled"] = (true), -- // Enables silentaim
+        ["UseSilentKeyBind"] = (true), -- // Uses a silentaim keybind to enable and disable
+        ["KeyBind"] = ("B"), -- // The keybind to enable the silentaim and disable it if enabled
+
+        ["PredictMovement"] = (true), -- // Predicts movement if you want it to
+        ["Prediction"] = (0.11), -- // The amount it predicts
+		["AdvancedPred"] = (true), -- // AutoPred should be off btw it generates a number based on your ping and uses it for pred
+        ["Part"] = ("HumanoidRootPart"), -- // The part it targets
+        ["UseAirPart"] = (false), -- // If you wanna use airpart
+        ["AirPart"] = ("LowerTorso"), -- // The airpart it uses
+        ["UseWhitelistedParts"] = (false), -- // If you wanna use whitelisted parts
+        ["WhitelistedPart"] = {"Head", "UpperTorso", "HumanoidRootPart", "LowerTorso", "LeftHand", "RightHand", "LeftLowerArm", "RightLowerArm", "LeftUpperArm", "RightUpperArm", "LeftFoot", "LeftLowerLeg", "LeftUpperLeg", "RightLowerLeg", "RightFoot", "RightUpperLeg"}, -- // "Head", "UpperTorso", "HumanoidRootPart", "LowerTorso", "LeftHand", "RightHand", "LeftLowerArm", "RightLowerArm", "LeftUpperArm", "RightUpperArm", "LeftFoot", "LeftLowerLeg", "LeftUpperLeg", "RightLowerLeg", "RightFoot", "RightUpperLeg" the whitelisted parts
+        ["HitChance"] = (100), -- // The hitchance it has to use the silentaim 
+        ["AirHitChance"] = (100), -- // Air hitchance
+        ["RandomizePoint"] = (false), -- // Randomizes the point to sort've make you look more legit
+        ["RandomizePointValue"] = (5), -- // How much it randomizes the point
+
+        ["TriggerBot"] = (false), -- // Enable the triggerbot
+        ["HoldMode"] = (false), -- // Hold to use the triggerbot or not
+        ["Delay"] = (100), -- // The delay it has before shooting
+        ["UseMouse"] = ("MouseButton3"), -- // If you want to use a mouse key
+        ["UseKey"] = (false), -- // If you want to use a key
+        ["Key"] = ("Q"), -- // The key to enable and disable
+
+        ["ClosestPart"] = (true), -- // Finds the closest part and uses it
+        ["ClosestPoint"] = (true), -- // Finds the closest point on the part and uses it
+        ["ClosestPointScale"] = (100), -- // Scale it uses in percent
+        ["AntiGroundShots"] = (true), -- // If you want no ground shots
+        ["AntiGroundValue"] = (0), -- // The strength it uses for the anti ground shots
+        ["AntiGroundActivation"] = (-16), -- // When it activates it
+
+		["LegitMode"] = (false), -- // You have to predict for the silent to work
+        ["SilentV2"] = (true), -- // Hits more with good settings and switches the resolver but still good
+        ["DotLock"] = (false), -- // Makes the silentaim like a dot lock
+        ["DotLockAimAssist"] = (true), -- // Makes the dot lock target whoever is the target on the aimassist
+        ["DotLockKey"] = ("H"), -- // The key to lock on with dot lock
+
+		["AntiAimViewer"] = (true), -- // Bypasses the silentaims mouse position
+        ["CustomAntiAimViewer"] = { -- // If the antiaimviewer doesn't work for a game use this
+            ["Enabled"] = (false),
+            ["RemoteEvent"] = (function(Pos)
+                local MainEvent = game:GetService("ReplicatedStorage").MainEvent
+                local Args = { -- // Current args are what you use for da hood
+                    [1] = "UpdateMousePos", -- // Common options are GetMousePos, UpdateMousePos, and MOUSE
+                    [2] = TargetCF -- // Can also add a 3rd arg like [3] below [2] most common is TargetCF
+                }
+                return Args, MainEvent
+            end)
+        },
+        ["PingPrediction"] = { -- // Use a prediction based on your ping
+            ["Enabled"] = (true), -- // Enables it
+            ["RefreshRate"] = (0.2), -- // When it checks the ping
+            ["Over200"] = (0.1848), -- // Yk this
+            ["P190_200"] = (0.1813),
+            ["P180_190"] = (0.1733),
+            ["P170_180"] = (0.1693),
+            ["P160_170"] = (0.1663),
+            ["P150_160"] = (0.1574),
+            ["P140_150"] = (0.1555),
+            ["P130_140"] = (0.15),
+            ["P120_130"] = (0.1411),
+            ["P110_120"] = (0.1344),
+            ["P100_110"] = (0.1315),
+            ["P90_100"] = (0.13),
+            ["P80_90"] = (0.1295),
+            ["P70_80"] = (0.129),
+            ["P60_70"] = (0.125),
+            ["P50_60"] = (0.121),
+            ["P40_50"] = (0.114),
+            ["P30_40"] = (0.11),
+            ["P20_30"] = (0.1),
+            ["P10_20"] = (0.05)
+        },
+        ["Fov"] = { -- // FOV for silentaim
+            ["Visible"] = (false), -- // If the fov is visible
+            ["Filled"] = (false), -- // If the fov is filled
+            ["Transparency"] = (1), -- // The fov's transparency
+            ["Color"] = (Color3.fromRGB(200, 200, 200)), -- // The color of the fov
+            ["Offset"] = (Vector2.new(0, 0)), -- // The offset of the fov
+            ["StickyFov"] = (false), -- // Stickyfov
+            ["Radius"] = (10) -- // The size of the fov
+        }
+		["GunSettings"] = {
+            ["Enabled"] = (false), -- // Enables gunsettings
+            ["Methods"] = {
+                ["Fov"] = (true), 
+                ["Range"] = (true), 
+                ["Prediction"] = (false), 
+                ["HitChance"] = (true), 
+                ["AirHitChance"] = (true), 
+                ["Smoothness"] = (false), 
+            }, -- // What its gonna change like prediction and stuff
+            ["Dynamic"] = {
+                ["Enabled"] = (true), -- // Will change the fov and stuff smoothly
+                ["Time"] = (0.5), -- // How long its gonna take
+                ["EasingStyle"] = ("Linear"), -- // What smoothing method
+                ["EasingDirection"] = ("Out") -- // What smoothing method
+            },
+            ["Far_Activation"] = (1/0), -- // 1/0 is infinite
+            ["Medium_Activation"] = (42), -- // How far using studs
+            ["Close_Activation"] = (16), -- // How far using studs
+            
+            ["Revolver"] = {
+                ["Fov"] = (19.5),     ["Prediction"] = (0.135),     ["HitChance"] = (100),      ["AirHitChance"] = (100),      ["Smoothness"] = (0.043),     
+                ["CloseFov"] = (10),  ["ClosePrediction"] = (0.121),["CloseHitChance"] = (100), ["CloseAirHitChance"] = (100), ["CloseSmoothness"] = (0.06), 
+                ["MedFov"] = (6),     ["MedPrediction"] = (0.124),  ["MedHitChance"] = (100),   ["MedAirHitChance"] = (100),   ["MedSmoothness"] = (0.04),   
+                ["FarFov"] = (4),     ["FarPrediction"] = (0.127),  ["FarHitChance"] = (100),   ["FarAirHitChance"] = (100),   ["FarSmoothness"] = (0.03),   
+            },
+            ["Double-Barrel SG"] = {
+                ["Fov"] = (19.5),     ["Prediction"] = (0.135),     ["HitChance"] = (100),      ["AirHitChance"] = (100),      ["Smoothness"] = (0.043),     
+                ["CloseFov"] = (10),  ["ClosePrediction"] = (0.121),["CloseHitChance"] = (100), ["CloseAirHitChance"] = (100), ["CloseSmoothness"] = (0.06), 
+                ["MedFov"] = (6),     ["MedPrediction"] = (0.124),  ["MedHitChance"] = (100),   ["MedAirHitChance"] = (100),   ["MedSmoothness"] = (0.04),   
+                ["FarFov"] = (4),     ["FarPrediction"] = (0.127),  ["FarHitChance"] = (100),   ["FarAirHitChance"] = (100),   ["FarSmoothness"] = (0.03),   
+            },
+            ["Shotgun"] = {
+                ["Fov"] = (19.5),     ["Prediction"] = (0.135),     ["HitChance"] = (100),      ["AirHitChance"] = (100),      ["Smoothness"] = (0.043),     
+                ["CloseFov"] = (10),  ["ClosePrediction"] = (0.121),["CloseHitChance"] = (100), ["CloseAirHitChance"] = (100), ["CloseSmoothness"] = (0.06), 
+                ["MedFov"] = (6),     ["MedPrediction"] = (0.124),  ["MedHitChance"] = (100),   ["MedAirHitChance"] = (100),   ["MedSmoothness"] = (0.04),   
+                ["FarFov"] = (4),     ["FarPrediction"] = (0.127),  ["FarHitChance"] = (100),   ["FarAirHitChance"] = (100),   ["FarSmoothness"] = (0.03),   
+            },
+            ["TacticalShotgun"] = {
+                ["Fov"] = (19.5),     ["Prediction"] = (0.135),     ["HitChance"] = (100),      ["AirHitChance"] = (100),      ["Smoothness"] = (0.043),     
+                ["CloseFov"] = (10),  ["ClosePrediction"] = (0.121),["CloseHitChance"] = (100), ["CloseAirHitChance"] = (100), ["CloseSmoothness"] = (0.06), 
+                ["MedFov"] = (6),     ["MedPrediction"] = (0.124),  ["MedHitChance"] = (100),   ["MedAirHitChance"] = (100),   ["MedSmoothness"] = (0.04),   
+                ["FarFov"] = (4),     ["FarPrediction"] = (0.127),  ["FarHitChance"] = (100),   ["FarAirHitChance"] = (100),   ["FarSmoothness"] = (0.03),   
+            },
+            ["SMG"] = {
+                ["Fov"] = (19.5),     ["Prediction"] = (0.135),     ["HitChance"] = (100),      ["AirHitChance"] = (100),      ["Smoothness"] = (0.043),     
+                ["CloseFov"] = (10),  ["ClosePrediction"] = (0.121),["CloseHitChance"] = (100), ["CloseAirHitChance"] = (100), ["CloseSmoothness"] = (0.06), 
+                ["MedFov"] = (6),     ["MedPrediction"] = (0.124),  ["MedHitChance"] = (100),   ["MedAirHitChance"] = (100),   ["MedSmoothness"] = (0.04),   
+                ["FarFov"] = (4),     ["FarPrediction"] = (0.127),  ["FarHitChance"] = (100),   ["FarAirHitChance"] = (100),   ["FarSmoothness"] = (0.03),   
+            },
+            ["Silencer"] = {
+                ["Fov"] = (19.5),     ["Prediction"] = (0.135),     ["HitChance"] = (100),      ["AirHitChance"] = (100),      ["Smoothness"] = (0.043),     
+                ["CloseFov"] = (10),  ["ClosePrediction"] = (0.121),["CloseHitChance"] = (100), ["CloseAirHitChance"] = (100), ["CloseSmoothness"] = (0.06), 
+                ["MedFov"] = (6),     ["MedPrediction"] = (0.124),  ["MedHitChance"] = (100),   ["MedAirHitChance"] = (100),   ["MedSmoothness"] = (0.04),   
+                ["FarFov"] = (4),     ["FarPrediction"] = (0.127),  ["FarHitChance"] = (100),   ["FarAirHitChance"] = (100),   ["FarSmoothness"] = (0.03),  
+            },
+            ["Rifle"] = {
+                ["Fov"] = (19.5),     ["Prediction"] = (0.135),     ["HitChance"] = (100),      ["AirHitChance"] = (100),      ["Smoothness"] = (0.043),   
+                ["CloseFov"] = (10),  ["ClosePrediction"] = (0.121),["CloseHitChance"] = (100), ["CloseAirHitChance"] = (100), ["CloseSmoothness"] = (0.06), 
+                ["MedFov"] = (6),     ["MedPrediction"] = (0.124),  ["MedHitChance"] = (100),   ["MedAirHitChance"] = (100),   ["MedSmoothness"] = (0.04),  
+                ["FarFov"] = (4),     ["FarPrediction"] = (0.127),  ["FarHitChance"] = (100),   ["FarAirHitChance"] = (100),   ["FarSmoothness"] = (0.03),  
+            },
+            ["AR"] = {
+                ["Fov"] = (19.5),     ["Prediction"] = (0.135),     ["HitChance"] = (100),      ["AirHitChance"] = (100),      ["Smoothness"] = (0.043),    
+                ["CloseFov"] = (10),  ["ClosePrediction"] = (0.121),["CloseHitChance"] = (100), ["CloseAirHitChance"] = (100), ["CloseSmoothness"] = (0.06),
+                ["MedFov"] = (6),     ["MedPrediction"] = (0.124),  ["MedHitChance"] = (100),   ["MedAirHitChance"] = (100),   ["MedSmoothness"] = (0.04),  
+                ["FarFov"] = (4),     ["FarPrediction"] = (0.127),  ["FarHitChance"] = (100),   ["FarAirHitChance"] = (100),   ["FarSmoothness"] = (0.03), 
+            },
+            ["AK47"] = {
+                ["Fov"] = (19.5),     ["Prediction"] = (0.135),     ["HitChance"] = (100),      ["AirHitChance"] = (100),      ["Smoothness"] = (0.043), 
+                ["CloseFov"] = (10),  ["ClosePrediction"] = (0.121),["CloseHitChance"] = (100), ["CloseAirHitChance"] = (100), ["CloseSmoothness"] = (0.06), 
+                ["MedFov"] = (6),     ["MedPrediction"] = (0.124),  ["MedHitChance"] = (100),   ["MedAirHitChance"] = (100),   ["MedSmoothness"] = (0.04),   
+                ["FarFov"] = (4),     ["FarPrediction"] = (0.127),  ["FarHitChance"] = (100),   ["FarAirHitChance"] = (100),   ["FarSmoothness"] = (0.03),   
+            }
+        }
+    },
+    ["AimAssist"] = { -- // Camlock
+        ["Enabled"] = (true), -- // Enables aimassist
+        ["KeyBind"] = ("E"), -- // The keybind to lock onto ppl
+        ["HoldMode"] = (false), -- // If you have to hold the key to lock on
+        ["Method"] = ("Camera"), -- // Camera currently
+        ["PredictMovement"] = (true), -- // Predicts movement
+        ["Prediction"] = (0.136645), -- // The prediction
+
+        ["Part"] = ("HumanoidRootPart"), -- // The part it target
+        ["ClosestPart"] = (true), -- // Finds closest part
+        ["RandomPart"] = (false), -- // Finds random parts
+
+        ["EnableChance"] = (false), -- // Enable chance to lock on
+		["Chance"] = (30), -- // The chance to lock on
+		["UseCircleRadius"] = (true), -- // Use the fov radius
+		["DisableOutSideCircle"] = (false), -- // Disables outside the fov radius
+        ["FirstPerson"] = (true), -- // If it works only on first person
+        ["ThirdPerson"] = (true), -- // If it works only on third person
+
+        ["UseSmoothness"] = (true), -- // Uses smoothness
+        ["Smoothness_X"] = (0.042), -- // The smoothness when they move side to side
+        ["Smoothness_Y"] = (0.045), -- // The smoothness when they move up or down
+        ["AirSmoothness"] = (true), -- // Enables airsmoothness
+        ["AirSmoothness_X"] = (0.055), -- // The smoothness when they move side to side in the air
+        ["AirSmoothness_Y"] = (0.055), -- // The smoothness when they move up and down in the air
+        ["Advanced"] = {
+            ["WallCheckV2"] = (true), -- // Checks if target is in front of a wall constantly
+            ["Stutter"] = (1), -- // The stutter it checks
+            ["EasingStyle"] = ("Linear"), -- // The easing style
+            ["EasingDirection"] = ("Out") -- // the easing direction
+        },
+        ["FrameSkip"] = { -- // Flicks to the part when key is pressed (Need aimassist enabled and target)
+            ["Enabled"] = (true), -- // Enables frameskip
+            ["Power"] = (0.95), -- // The power of the frameskip
+            ["UsePrediction"] = (false), -- // Uses aimassist prediction
+            ["TargetPart"] = {["Enabled"] = (true), ["Part"] = ("HumanoidRootPart")}, -- // If you wanna use a part
+            ["KeyBind"] = ("V") -- // The keybind to flick
+        },
+        ["Shake"] = { -- // Shake
+            ["Enabled"] = (true), -- // Enables shake
+            ["ShakeX"] = (20), -- // Shake when they move side to side
+            ["ShakeY"] = (15), -- // Shake when they move up and down
+            ["ShakeZ"] = (20), -- // Shake when they move back and forward
+        },
+        ["Fov"] = { -- // FOV for aimassist
+            ["Visible"] = (false), -- // If fov is visible
+            ["Filled"] = (true), -- // If fov is filled
+            ["Transparency"] = (0.5), -- // How transparent the fov is
+            ["Color"] = (Color3.fromRGB(0, 0, 0)), -- // The color of the fov
+            ["Radius"] = (70) -- // The radius of the fov
+        }
+    },
+    ["UniversalCheck"] = { -- // Checks
+        ["InVisibleCheck"] = (true), -- // Checks if target is invisible
+        ["ForceFieldCheck"] = (false), -- // Checks if target has a forcefield
+        ["TargetDeathCheck"] = (true), -- // Checks if target is dead
+        ["PlayerDeathCheck"] = (true), -- // Checks if player is dead
+        ["ToolOut"] = (false), -- // Only enables aimassist if a tool is out
+        ["WallCheck"] = (true), -- // Checks if wall is infront of target
+        ["WallCheckV2"] = (true), -- // Checks if wall is infront of prediction
+        ["FriendCheck"] = (false), -- // CAN BREAK SILENT
+        ["TeamCheck"] = (false), -- // CAN BREAK SILENT
+        ["CrewCheck"] = (false), -- // CAN BREAK SILENT
+        ["KoCheck"] = (true), -- // Checks if target is grabbed or KOED
+        ["Advanced"] = {
+            ["Bots"] = (true), -- // Targets bots
+            ["BotPath"] = ("NPC") -- // Where it finds the bots using workspace
+        }
+    },
+    ["ChatCommands"] = { -- // Chatcmds
+        ["Enabled"] = (true),
+        ["Silent_Enabled"] = ("!senabled"), -- // Boolean
+        ["Silent_Prediction"] = ("!spred"), -- // Number
+        ["Silent_Fov_Size"] = ("!sfov"), -- // Number
+        ["Silent_Fov_Show"] = ("!sshow"), -- // Boolean
+        ["Silent_HitChance"] = ("!schance"), -- // Number
+        ["Silent_LegitMode"] = ("!slegit"), -- // Boolean
+        ["SilentV2"] = ("SilentV2"), -- // Boolean
+        ["AimAssist_Enabled"] = ("!aenabled"), -- // Boolean
+        ["AimAssist_Prediction"] = ("!apred"), -- // Number
+        ["AimAssist_Fov_Size"] = ("!afov"),  -- // Number
+        ["AimAssist_Fov_Show"] = ("!ashow"), -- // Boolean
+        ["AimAssist_SmoothX"] = ("!smoothx"), -- // Number
+        ["AimAssist_SmoothY"] = ("!smoothy"), -- // Number
+        ["AimAssist_Shake"] = ("!ashake"), -- // Number
+        ["RejoinServer"] = ("rejserv"), -- // Rejoins current server
+        ["RandomServer"] = ("hopserv"), -- // Joins a random server
+        ["SaveConfig"] = ("savecfg"), -- // Saves config in folder
+        ["LoadConfig"] = ("loadcfg"), -- // Loads config need name
+        ["Crash"] = (". "), -- // What you say to crash game
+        ["CrashMethod"] = ("Close") -- // Freeze, Close
+    },
+    ["InventorySorter"] = { -- // Sorts the inventory using a keybind
+        ["Enabled"] = (true), -- // Enables it
+        ["KeyBind"] = ("M"), -- // The keybind to sort the inventory
+        ["UseFood"] = (true), -- // Uses food when the stuff isnt filled in
+        ["Slots"] = { -- // Go up to 10
+            ("[Double-Barrel SG]"), -- // This etc.
+            ("[Revolver]"), -- // Main guns are [Double-Barrel SG] [Revolver] [TacticalShotgun] [Shotgun] unless you're weird
+            ("[TacticalShotgun]"),
+            ("[Shotgun]"),
+            ("[Katana]")
+        },
+    },
+    ["MemorySpoofer"] = { -- // Spoofs memory, nto recommended anymore bc high memory is normal now
+        ["Enabled"] = (false), -- // Enables mem spoof
+        ["Delay"] = (1.8), -- // Delay it changes the mem
+        ["Lowest"] = (1053), -- // Lowest it can go
+        ["Maximum"] = (1250), -- // Highest it can go
+    },
+    ["Macro"] = { -- // Macros
+        ["Enabled"] = (true), -- // Speed macro enabled
+        ["Delay"] = (1), -- // Delay
+        ["Key"] = ("T"), -- // Key to use the macro
+        ["HoldMode"] = (true), -- // Hold the key to use the macro
+        ["ThirdPersonV2"] = (false), -- // Makes third person mode faster
+        ["Method"] = ("FirstPerson"), -- // FirstPerson, ThirdPerson, Shift
+        ["MacroAbuse"] = (true), -- // Bypasses where you can't press i and o while holding a gun
+
+        ["NoclipMacro"] = (true), -- // Noclip macro uses tactical shotgun or shotgun
+        ["NoclipHold"] = (true), -- // You get it
+        ["NoclipKey"] = ("C"), -- // You get it
+
+        ["Spin"] = (true), -- // Spins the camera
+        ["Degrees"] = (360), -- // The degrees it spins
+        ["RotationSpeed"] = (5), -- // The speed it spins
+        ["SpinKeybind"] = ("V") -- // The keybind you press to spin
+
+		["UseLay"] = (true), -- // If you wanna lay using a key
+        ["LayKey"] = ("T"), -- // The lay key
+    },
+    ["Esp"] = { -- // Esp stuffsssssssssssssssssssss
+        ["Enabled"] = (false),
+        ["UseEspKey"] = (true),
+        ["EspKey"] = ("Z"),
+        ["HoldMode"] = (false),
+
+        ["TextSize"] = (16),
+        ["Name"] = {["Enabled"] = (true), ["OutLine"] = (true), ["Color"] = (Color3.fromRGB(255, 255, 255))},
+        ["Box"] = {["Enabled"] = (true), ["OutLine"] = (true), ["Color"] = (Color3.fromRGB(255, 255, 255))},
+        ["HealthBar"] = {["Enabled"] = (true), ["OutLine"] = (true), ["Color"] = (Color3.fromRGB(0, 255, 0)), ["HealthColor"] = (true)},
+        ["HealthText"] = {["Enabled"] = (true), ["OutLine"] = (true), ["Color"] = (Color3.fromRGB(0, 255, 0)), ["HealthColor"] = (true)},
+        ["ArmorBar"] = {["Enabled"] = (true), ["OutLine"] = (true), ["Color"] = (Color3.fromRGB(0, 189, 255))},
+        ["ArmorText"] = {["Enabled"] = (true), ["OutLine"] = (true), ["Color"] = (Color3.fromRGB(0, 189, 255))},
+        ["Distance"] = {["Enabled"] = (true), ["OutLine"] = (true), ["Color"] = (Color3.fromRGB(255, 255, 255))},
+        ["Tool"] = {["Enabled"] = (true), ["OutLine"] = (true), ["Color"] = (Color3.fromRGB(255, 255, 255))},
+        ["Flags"] = {["Enabled"] = (false), ["WalkingState"] = (true), ["DesyncState"] = (true), ["OutLine"] = (true), ["Color"] = (Color3.fromRGB(255, 255, 255))},
+        ["Tracer"] = {["Enabled"] = (false), ["Method"] = ("Mouse"), ["Thickness"] = (1), ["Color"] = (Color3.fromRGB(255, 255, 255))},
+        ["CrewColor"] = {["Enabled"] = (true), ["Color"] = (Color3.fromRGB(0, 255, 0))},
+        ["TargetColor"] = {["Enabled"] = (false), ["Color"] = (Color3.fromRGB(255, 0, 0))}
+    }
+    ["Teleport"] = {
+        ["Enabled"] = (true), -- // Enables teleporting
+		["Key"] = ("T") -- // The key that teleports you to it
+        ["Where"] = ("Theater"), -- // Casino, Theater, TacoHamburger, Kicks, Fitness, UphillRR, Park, Basketball, Boxing, UphillTaco, MediumArmor (Uphill), BankVault, DB, Rev, AdminBase, SchoolCafe, UphillGuns
+    },
+	["Misc"] = {
+		["AntiFling"] = (true), -- // ANTI FLING
+        ["Random"] = (true), -- // Makes it so theres a chance to execute the script and not
+        ["HardMode"] = (true), -- // Makes the chance threshold lower
+},
+
+--[[
+      ___________________________
+     /                           \
+    |   Excalibur © 2022 - 2023   |
+    |     All rights reserved     |
+    |				  			  |
+    |				  			  |
+    |  This material may not be   |
+    |    reproduced, displayed,   |
+    |   modified or distributed   |
+    |				  			  |
+    |				  			  |
+    |  without the express prior  |
+    |  written permission of the  |
+    |    the copyright holder.    |
+    \_____________________________/
+    
+
+			  													!!!TOS!!!
+	Thou can not distribute this script to a receiver. Thou can not steal from this script without the holder's permission and/or co-holder's permission.
+	Thou can not attempt to deobfuscate, decompile, and/or disassemble the script. Thou can not share/leak their key. Thou can not claim this script is theres/others. 
+													  !!!The TOS can update at any time!!!
+												 		   Excalibur © 2022 - 2023
+															All rights reserved
+
+
+READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!!
+READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!!
+READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!!
+READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!!
+READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!!
+READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!!
+READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!!
+READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! 
+READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!!
+READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!!
+READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! READ THE TOS!!! 
+
+]]--
+
+-- // Variables
+local massa = true
+local ExcaliburLogo, GetTime = game:HttpGet("https://i.ibb.co/q1p7M1z/excalibur.jpg"), os.clock()
+
+local NoclipMacro, Macro, PanicMode, TriggerBot, FreezePos, FrameSkip = false, false, false, false, false, false
+local ClosestPointCF, ToolConnection, SilentTarget, AimTarget, DotLock, keybindTime, LastStutter = nil, nil, nil, nil, nil, 0, tick()
+local SmoothingFactor, PositionData, PositionData2, CurrentIndex, CurrentIndex2, CurrentVelocity, CurrentVelocity2 = 6, {}, {}, 1, 1, Vector3.zero, Vector3.zero
+
+local Script = {Functions = {}, Friends = {}, Drawing = {}, EspPlayers = {}, NotifyNote = {}, BeizerManager = {}, BeizerCurve = {}, PanicModeSaves = {}, SavedValue = {}}
+
+local Saves = {ShotCheck = {}, CharCheck = {}, AddedCheck = {}}
+local Detection = {OldAmmo = {}, Suspicious = {}, NewBullets = nil}
+
+local Players, Client, Mouse, RS, Camera, GuiS, Uis, Tween, Excalibur = game:GetService("Players"), game:GetService("Players").LocalPlayer, game:GetService("Players").LocalPlayer:GetMouse(), game:GetService("RunService"), game:GetService("Workspace").CurrentCamera, game:GetService("GuiService"), game:GetService("UserInputService"), game:GetService("TweenService"), getgenv().Excalibur
+local Text_1, Text_2, Text_3, Text_4, Text_5, Text_6, Text_7 = tostring(math.random(Excalibur.MemorySpoofer.Lowest, Excalibur.MemorySpoofer.Maximum)), tostring("." .. math.random(1, 99) .. " MB"), tostring(math.random(Excalibur.MemorySpoofer.Lowest, Excalibur.MemorySpoofer.Maximum)), tostring("." .. math.random(1, 99) .. " MB"), tostring(math.random(Excalibur.MemorySpoofer.Lowest, Excalibur.MemorySpoofer.Maximum)), tostring("."..math.random(1, 999)), tostring("."..math.random(1, 999))
+
+Script.SavedValue.SilentPart = Excalibur.Silent.Part
+Script.SavedValue.AimAssistSmoothX = Excalibur.AimAssist.Smoothness_X
+Script.SavedValue.AimAssistSmoothY = Excalibur.AimAssist.Smoothness_Y
+Script.SavedValue.ShakeX = Excalibur.AimAssist.Shake.ShakeX
+Script.SavedValue.ShakeY = Excalibur.AimAssist.Shake.ShakeY
+Script.SavedValue.ShakeZ = Excalibur.AimAssist.Shake.ShakeZ
+
+Script.BeizerCurve.Offset = Vector2.new(0,0)
+
+-- // Randomizer
+-- // Randomizer
+if Excalibur.Misc.Random and (math.random() > 50 or (Excalibur.Misc.Hardmode and math.random() > 1)) then
+    Client:Kick("Not above threshold")
+end
+
+-- // Using Thise For TweenService Support + Im 2 Lazy
+local SilentFovRadius = Instance.new("NumberValue")
+SilentFovRadius.Name = "DevConsole"
+SilentFovRadius.Parent = nil
+SilentFovRadius.Value = Excalibur.Silent.Fov.Radius
+
+-- // Main Intro Local
+if Excalibur.Options.Intro then
+    local TweenService = game:GetService("TweenService")
+    local Lighting = game:GetService("Lighting")
+    local CoreGui = game:GetService("CoreGui")
+
+    local Flash = Instance.new("ColorCorrectionEffect")
+    Flash.Parent = Lighting
+    Flash.TintColor = Color3.fromRGB(223, 91, 91)
+    TweenService:Create(Flash, TweenInfo.new(0.7), {TintColor = Color3.fromRGB(255, 255, 255)}):Play()
+
+    local Gui = Instance.new("ScreenGui")
+    Gui.Name = "RobloxGui"
+    Gui.Parent = CoreGui
+    Gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+    local Image = Instance.new("ImageLabel")
+    Image.BackgroundTransparency = 1
+    Image.Position = UDim2.new(0.405, 0, 0.405, 0)
+    Image.Size = UDim2.new(0.17, 0, 0.27, 0)
+    Image.ImageTransparency = 1
+    Image.Image = ExcaliburLogo
+    Image.Parent = Gui
+
+    local Blur = Instance.new("BlurEffect")
+    Blur.Parent = Lighting
+    Blur.Size = 0
+
+    local function runAnimation()
+        local tweens = {
+            TweenService:Create(Blur, TweenInfo.new(1.5, Enum.EasingStyle.Cubic, Enum.EasingDirection.Out), {Size = 50}),
+            TweenService:Create(Image, TweenInfo.new(1, Enum.EasingStyle.Cubic, Enum.EasingDirection.Out), {ImageTransparency = 0.2}),
+            TweenService:Create(Image, TweenInfo.new(0.3, Enum.EasingStyle.Bounce, Enum.EasingDirection.Out), {Size = UDim2.new(0.15, 0, 0.25, 0)}),
+            TweenService:Create(Image, TweenInfo.new(0.3, Enum.EasingStyle.Bounce, Enum.EasingDirection.Out), {Position = UDim2.new(0.415, 0, 0.415, 0)})
+        }
+
+        for _, tween in ipairs(tweens) do
+            tween:Play()
+            tween.Completed:Wait()
+        end
+
+        wait(1)
+
+        TweenService:Create(Image, TweenInfo.new(3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageTransparency = 1}):Play()
+        TweenService:Create(Blur, TweenInfo.new(3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = 0}):Play()
+        wait(3)
+
+        Gui:Destroy()
+        Flash:Destroy()
+        Blur:Destroy()
+    end
+
+    coroutine.wrap(runAnimation)()
+end
+
+-- // Low Gfx Function
+if Excalibur.Options.AutoLowGfx then
+    for _, v in pairs(game:GetService("Workspace"):GetDescendants()) do
+        if v:IsA("BasePart") and not v.Parent:FindFirstChild("Humanoid") then
+            v.Material = Enum.Material.SmoothPlastic
+            if v:IsA("Texture") then
+                v:Destroy()
+            end
+        end
+    end
+end
+
+-- // BoomBox Mute Function
+if Excalibur.Options.MuteBoombox then
+	while true do
+    for _, v in pairs(game:GetService("Workspace"):GetDescendants()) do
+        if v:IsA("Sound") and not (v.Name == "ShootSound" or v.Name == "NoAmmo") then
+            v.Volume = 0
+        	end
+    	end
+    	wait(10) -- Add a small delay to prevent excessive resource usage
+	end
+end
+
+-- // Seat Remove Function
+if Excalibur.Options.RemoveSeats then
+    for _, v in pairs(game:GetService("Workspace"):GetDescendants()) do
+        if v:IsA("Seat") then
+            v:Destroy()
+        end
+    end
+end
+
+if Excalibur.Options.Shaders then
+local Bloom = Instance.new("BloomEffect")
+Bloom.Intensity = 0.1
+Bloom.Threshold = 0
+Bloom.Size = 100
+
+local Tropic = Instance.new("Sky")
+Tropic.Name = "Tropic"
+Tropic.SkyboxUp = "http://www.roblox.com/asset/?id=169210149"
+Tropic.SkyboxLf = "http://www.roblox.com/asset/?id=169210133"
+Tropic.SkyboxBk = "http://www.roblox.com/asset/?id=169210090"
+Tropic.SkyboxFt = "http://www.roblox.com/asset/?id=169210121"
+Tropic.StarCount = 100
+Tropic.SkyboxDn = "http://www.roblox.com/asset/?id=169210108"
+Tropic.SkyboxRt = "http://www.roblox.com/asset/?id=169210143"
+Tropic.Parent = Bloom
+
+local Sky = Instance.new("Sky")
+Sky.SkyboxUp = "http://www.roblox.com/asset/?id=196263782"
+Sky.SkyboxLf = "http://www.roblox.com/asset/?id=196263721"
+Sky.SkyboxBk = "http://www.roblox.com/asset/?id=196263721"
+Sky.SkyboxFt = "http://www.roblox.com/asset/?id=196263721"
+Sky.CelestialBodiesShown = false
+Sky.SkyboxDn = "http://www.roblox.com/asset/?id=196263643"
+Sky.SkyboxRt = "http://www.roblox.com/asset/?id=196263721"
+Sky.Parent = Bloom
+
+Bloom.Parent = game:GetService("Lighting")
+
+local Bloom = Instance.new("BloomEffect")
+Bloom.Enabled = false
+Bloom.Intensity = 0.35
+Bloom.Threshold = 0.2
+Bloom.Size = 56
+
+local Tropic = Instance.new("Sky")
+Tropic.Name = "Tropic"
+Tropic.SkyboxUp = "http://www.roblox.com/asset/?id=169210149"
+Tropic.SkyboxLf = "http://www.roblox.com/asset/?id=169210133"
+Tropic.SkyboxBk = "http://www.roblox.com/asset/?id=169210090"
+Tropic.SkyboxFt = "http://www.roblox.com/asset/?id=169210121"
+Tropic.StarCount = 100
+Tropic.SkyboxDn = "http://www.roblox.com/asset/?id=169210108"
+Tropic.SkyboxRt = "http://www.roblox.com/asset/?id=169210143"
+Tropic.Parent = Bloom
+
+local Sky = Instance.new("Sky")
+Sky.SkyboxUp = "http://www.roblox.com/asset/?id=196263782"
+Sky.SkyboxLf = "http://www.roblox.com/asset/?id=196263721"
+Sky.SkyboxBk = "http://www.roblox.com/asset/?id=196263721"
+Sky.SkyboxFt = "http://www.roblox.com/asset/?id=196263721"
+Sky.CelestialBodiesShown = false
+Sky.SkyboxDn = "http://www.roblox.com/asset/?id=196263643"
+Sky.SkyboxRt = "http://www.roblox.com/asset/?id=196263721"
+Sky.Parent = Bloom
+
+Bloom.Parent = game:GetService("Lighting")
+local Blur = Instance.new("BlurEffect")
+Blur.Size = 2
+
+Blur.Parent = game:GetService("Lighting")
+local Efecto = Instance.new("BlurEffect")
+Efecto.Name = "Efecto"
+Efecto.Enabled = false
+Efecto.Size = 2
+
+Efecto.Parent = game:GetService("Lighting")
+local Inaritaisha = Instance.new("ColorCorrectionEffect")
+Inaritaisha.Name = "Inari taisha"
+Inaritaisha.Saturation = 0.05
+Inaritaisha.TintColor = Color3.fromRGB(255, 224, 219)
+
+Inaritaisha.Parent = game:GetService("Lighting")
+local Normal = Instance.new("ColorCorrectionEffect")
+Normal.Name = "Normal"
+Normal.Enabled = false
+Normal.Saturation = -0.2
+Normal.TintColor = Color3.fromRGB(255, 232, 215)
+
+Normal.Parent = game:GetService("Lighting")
+local SunRays = Instance.new("SunRaysEffect")
+SunRays.Intensity = 0.05
+
+SunRays.Parent = game:GetService("Lighting")
+local Sunset = Instance.new("Sky")
+Sunset.Name = "Sunset"
+Sunset.SkyboxUp = "rbxassetid://323493360"
+Sunset.SkyboxLf = "rbxassetid://323494252"
+Sunset.SkyboxBk = "rbxassetid://323494035"
+Sunset.SkyboxFt = "rbxassetid://323494130"
+Sunset.SkyboxDn = "rbxassetid://323494368"
+Sunset.SunAngularSize = 14
+Sunset.SkyboxRt = "rbxassetid://323494067"
+
+Sunset.Parent = game:GetService("Lighting")
+local Takayama = Instance.new("ColorCorrectionEffect")
+Takayama.Name = "Takayama"
+Takayama.Enabled = false
+Takayama.Saturation = -0.3
+Takayama.Contrast = 0.1
+Takayama.TintColor = Color3.fromRGB(235, 214, 204)
+
+Takayama.Parent = game:GetService("Lighting")
+local L = game:GetService("Lighting")
+L.Brightness = 2.14
+L.ColorShift_Bottom = Color3.fromRGB(11, 0, 20)
+L.ColorShift_Top = Color3.fromRGB(240, 127, 14)
+L.OutdoorAmbient = Color3.fromRGB(34, 0, 49)
+L.ClockTime = 6.7
+L.FogColor = Color3.fromRGB(94, 76, 106)
+L.FogEnd = 1000
+L.FogStart = 0
+L.ExposureCompensation = 0.24
+L.ShadowSoftness = 0
+L.Ambient = Color3.fromRGB(59, 33, 27)
+
+local Bloom = Instance.new("BloomEffect")
+Bloom.Intensity = 0.1
+Bloom.Threshold = 0
+Bloom.Size = 100
+
+local Tropic = Instance.new("Sky")
+Tropic.Name = "Tropic"
+Tropic.SkyboxUp = "http://www.roblox.com/asset/?id=169210149"
+Tropic.SkyboxLf = "http://www.roblox.com/asset/?id=169210133"
+Tropic.SkyboxBk = "http://www.roblox.com/asset/?id=169210090"
+Tropic.SkyboxFt = "http://www.roblox.com/asset/?id=169210121"
+Tropic.StarCount = 100
+Tropic.SkyboxDn = "http://www.roblox.com/asset/?id=169210108"
+Tropic.SkyboxRt = "http://www.roblox.com/asset/?id=169210143"
+Tropic.Parent = Bloom
+
+local Sky = Instance.new("Sky")
+Sky.SkyboxUp = "http://www.roblox.com/asset/?id=196263782"
+Sky.SkyboxLf = "http://www.roblox.com/asset/?id=196263721"
+Sky.SkyboxBk = "http://www.roblox.com/asset/?id=196263721"
+Sky.SkyboxFt = "http://www.roblox.com/asset/?id=196263721"
+Sky.CelestialBodiesShown = false
+Sky.SkyboxDn = "http://www.roblox.com/asset/?id=196263643"
+Sky.SkyboxRt = "http://www.roblox.com/asset/?id=196263721"
+Sky.Parent = Bloom
+
+Bloom.Parent = game:GetService("Lighting")
+
+local Bloom = Instance.new("BloomEffect")
+Bloom.Enabled = false
+Bloom.Intensity = 0.35
+Bloom.Threshold = 0.2
+Bloom.Size = 56
+
+local Tropic = Instance.new("Sky")
+Tropic.Name = "Tropic"
+Tropic.SkyboxUp = "http://www.roblox.com/asset/?id=169210149"
+Tropic.SkyboxLf = "http://www.roblox.com/asset/?id=169210133"
+Tropic.SkyboxBk = "http://www.roblox.com/asset/?id=169210090"
+Tropic.SkyboxFt = "http://www.roblox.com/asset/?id=169210121"
+Tropic.StarCount = 100
+Tropic.SkyboxDn = "http://www.roblox.com/asset/?id=169210108"
+Tropic.SkyboxRt = "http://www.roblox.com/asset/?id=169210143"
+Tropic.Parent = Bloom
+
+local Sky = Instance.new("Sky")
+Sky.SkyboxUp = "http://www.roblox.com/asset/?id=196263782"
+Sky.SkyboxLf = "http://www.roblox.com/asset/?id=196263721"
+Sky.SkyboxBk = "http://www.roblox.com/asset/?id=196263721"
+Sky.SkyboxFt = "http://www.roblox.com/asset/?id=196263721"
+Sky.CelestialBodiesShown = false
+Sky.SkyboxDn = "http://www.roblox.com/asset/?id=196263643"
+Sky.SkyboxRt = "http://www.roblox.com/asset/?id=196263721"
+Sky.Parent = Bloom
+
+Bloom.Parent = game:GetService("Lighting")
+local Blur = Instance.new("BlurEffect")
+Blur.Size = 2
+
+Blur.Parent = game:GetService("Lighting")
+local Efecto = Instance.new("BlurEffect")
+Efecto.Name = "Efecto"
+Efecto.Enabled = false
+Efecto.Size = 2
+
+Efecto.Parent = game:GetService("Lighting")
+local Inaritaisha = Instance.new("ColorCorrectionEffect")
+Inaritaisha.Name = "Inari taisha"
+Inaritaisha.Saturation = 0.05
+Inaritaisha.TintColor = Color3.fromRGB(255, 224, 219)
+
+Inaritaisha.Parent = game:GetService("Lighting")
+local Normal = Instance.new("ColorCorrectionEffect")
+Normal.Name = "Normal"
+Normal.Enabled = false
+Normal.Saturation = -0.2
+Normal.TintColor = Color3.fromRGB(255, 232, 215)
+
+Normal.Parent = game:GetService("Lighting")
+local SunRays = Instance.new("SunRaysEffect")
+SunRays.Intensity = 0.05
+
+SunRays.Parent = game:GetService("Lighting")
+local Sunset = Instance.new("Sky")
+Sunset.Name = "Sunset"
+Sunset.SkyboxUp = "rbxassetid://323493360"
+Sunset.SkyboxLf = "rbxassetid://323494252"
+Sunset.SkyboxBk = "rbxassetid://323494035"
+Sunset.SkyboxFt = "rbxassetid://323494130"
+Sunset.SkyboxDn = "rbxassetid://323494368"
+Sunset.SunAngularSize = 14
+Sunset.SkyboxRt = "rbxassetid://323494067"
+
+Sunset.Parent = game:GetService("Lighting")
+local Takayama = Instance.new("ColorCorrectionEffect")
+Takayama.Name = "Takayama"
+Takayama.Enabled = false
+Takayama.Saturation = -0.3
+Takayama.Contrast = 0.1
+Takayama.TintColor = Color3.fromRGB(235, 214, 204)
+
+Takayama.Parent = game:GetService("Lighting")
+local L = game:GetService("Lighting")
+L.Brightness = 2.14
+L.ColorShift_Bottom = Color3.fromRGB(11, 0, 20)
+L.ColorShift_Top = Color3.fromRGB(240, 127, 14)
+L.OutdoorAmbient = Color3.fromRGB(34, 0, 49)
+L.ClockTime = 6.7
+L.FogColor = Color3.fromRGB(94, 76, 106)
+L.FogEnd = 1000
+L.FogStart = 0
+L.ExposureCompensation = 0.24
+L.ShadowSoftness = 0
+L.Ambient = Color3.fromRGB(59, 33, 27) 
+end
+-- // Drawing For AimAssist, SilentAim And Desync Dot
+Script.Drawing.SilentCircle = Drawing.new("Circle")
+Script.Drawing.SilentCircle.Color = Color3.new(1,1,1)
+Script.Drawing.SilentCircle.Thickness = 1
+Script.Drawing.SilentCircle.NumSides = 128
+
+Script.Drawing.AimAssistCircle = Drawing.new("Circle")
+Script.Drawing.AimAssistCircle.Color = Color3.new(1,1,1)
+Script.Drawing.AimAssistCircle.Thickness = 1
+Script.Drawing.AimAssistCircle.NumSides = 128
+
+-- // Checks If The Player Is Alive
+Script.Functions.Alive = function(Plr)
+    return (Plr and Plr.Character and Plr.Character:FindFirstChild("Humanoid") and Plr.Character:FindFirstChild("HumanoidRootPart")) and true or false
+end
+
+-- // Checks If Player Is On Your Screen
+Script.Functions.OnScreen = function(Object)
+    local _, OnScreen = Camera:WorldToScreenPoint(Object.Position)
+    return OnScreen
+end
+
+-- // Gets The Fov Method
+Script.Functions.GetFovPosition = function()
+    if Excalibur.Silent.Fov.Method == ("Screen") then
+        return Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y / 2)
+    else
+        return Vector2.new(Mouse.X, Mouse.Y)
+    end
+end
+
+-- // Gets Magnitude From Part Position And Mouse
+Script.Functions.GetMagnitudeFromMouse = function(Part)
+    local PartPos, OnScreen = Camera:WorldToScreenPoint(Part.Position)
+    if OnScreen then
+        local GetScreenPos = Script.Functions.GetFovPosition()
+        local Magnitude = ((Vector2.new(PartPos.X, PartPos.Y) - GetScreenPos) - Excalibur.Silent.Fov.Offset).Magnitude
+        return Magnitude
+    end
+    return math.huge
+end
+
+-- // Makes Random Number With Vector3 
+Script.Functions.RandomVec3 = function(Number, Multi)
+    return (Vector3.new(math.random(-Number, Number), math.random(-Number, Number), math.random(-Number, Number)) * Multi or 1)
+end
+
+-- // Checks If The Player Is Behind A Wall Or Something Else
+Script.Functions.WallCheck = function(Pos, PartDescendant)
+    local Character = Client.Character
+    local Origin = Camera.CFrame.Position
+
+    local RayCastParams = RaycastParams.new()
+    RayCastParams.FilterType = Enum.RaycastFilterType.Blacklist
+    RayCastParams.FilterDescendantsInstances = {Character, Camera}
+
+    local Result = Workspace.Raycast(Workspace, Origin, Pos - Origin, RayCastParams)
+    
+    if (Result) then
+        local PartHit = Result.Instance
+        local Visible = (not PartHit or Instance.new("Part").IsDescendantOf(PartHit, PartDescendant))
+        
+        return Visible
+    end
+    return false
+end
+
+-- // Random Number To Compare
+Script.Functions.CalculateChance = function(Percentage)
+    Percentage = math.floor(Percentage)
+    return math.random(0, 99) < Percentage
+end
+
+-- // Check If Crew Folder Is A Thing
+Script.Functions.FindCrew = function(Plr)
+	if Plr:FindFirstChild("DataFolder") and Plr.DataFolder:FindFirstChild("Information") and Plr.DataFolder.Information:FindFirstChild("Crew") and Client:FindFirstChild("DataFolder") and Client.DataFolder:FindFirstChild("Information") and Client.DataFolder.Information:FindFirstChild("Crew") then
+        if Client.DataFolder.Information:FindFirstChild("Crew").Value ~= nil and Plr.DataFolder.Information:FindFirstChild("Crew").Value ~= nil and Plr.DataFolder.Information:FindFirstChild("Crew").Value ~= ("") and Client.DataFolder.Information:FindFirstChild("Crew").Value ~= ("") then 
+			return true
+		end
+	end
+	return false
+end
+
+-- // Clears anything in console
+Script.Functions.ClearConsole = function()
+    coroutine.resume(coroutine.create(function()
+        local DevConsole = game:GetService("CoreGui"):WaitForChild("DevConsoleMaster")
+        local DevWindow = DevConsole:WaitForChild("DevConsoleWindow")
+        local DevUI = DevWindow:WaitForChild("DevConsoleUI")
+        local MainView = DevUI:WaitForChild("MainView")
+        local ClientLog = MainView:WaitForChild("ClientLog")
+        for _, v in pairs(ClientLog:GetChildren()) do
+            if v:IsA("GuiObject") and v.Name == v.Name:match("%d+") then
+                v:Destroy()
+            end
+        end
+    end))
+end
+
+-- // Calculates The Velocity
+Script.Functions.GetVelocity = function(PositionData)
+	local TotalVelocity = 0
+	local AveragePosition = Vector3.zero
+	local AverageTime = 0
+	local GetData = #PositionData
+	if GetData == 0 then
+		return AveragePosition, AverageTime
+	end
+	for i = 1, GetData do
+		local Data = PositionData[i]
+		if Data and Data.Position then
+			local Velocity = SmoothingFactor - i + 1
+			AveragePosition = AveragePosition + (Data.Position * Velocity)
+			AverageTime = AverageTime + (Data.Time * Velocity)
+			TotalVelocity = TotalVelocity + Velocity
+		end
+	end
+	AveragePosition = AveragePosition / TotalVelocity
+	AverageTime = AverageTime / TotalVelocity
+	return AveragePosition, AverageTime
+end
+
+-- // Smoothness The Velocity Out
+Script.Functions.ComPlexVelocity = function(Plr, CurrentPos, Mode)
+	local GetTick = tick()
+    local GetPos = CurrentPos
+
+    -- // Fixes Calculating The Wrong Position
+    if Mode then
+        if PositionData2[CurrentIndex2] and PositionData2[CurrentIndex2].Target and tostring(Plr) ~= PositionData2[CurrentIndex2].Target then
+            PositionData2[CurrentIndex2] = {Target = tostring(Plr), Position = GetPos, Time = GetTick}
+            return Vector3.zero
+        end
+    else
+        if PositionData[CurrentIndex] and PositionData[CurrentIndex].Target and tostring(Plr) ~= PositionData[CurrentIndex].Target then
+            PositionData[CurrentIndex] = {Target = tostring(Plr), Position = GetPos, Time = GetTick}
+            return Vector3.zero
+        end
+    end
+
+    if Mode then
+    	PositionData2[CurrentIndex2] = {Target = tostring(Plr), Position = GetPos, Time = GetTick}
+    	CurrentIndex2 = (CurrentIndex2 % SmoothingFactor) + 1
+    	local AveragePosition, AverageTime = Script.Functions.GetVelocity(PositionData2)
+    	local PreviousData = PositionData2[CurrentIndex2]
+    	if PreviousData and PreviousData.Position then
+    		local Velocity = (GetPos - PreviousData.Position) / (GetTick - PreviousData.Time)
+    		return Velocity
+    	end
+    else
+    	PositionData[CurrentIndex] = {Target = tostring(Plr), Position = GetPos, Time = GetTick}
+    	CurrentIndex = (CurrentIndex % SmoothingFactor) + 1
+    	local AveragePosition, AverageTime = Script.Functions.GetVelocity(PositionData)
+    	local PreviousData = PositionData[CurrentIndex]
+    	if PreviousData and PreviousData.Position then
+    		local Velocity = (GetPos - PreviousData.Position) / (GetTick - PreviousData.Time)
+    		return Velocity
+    	end
+    end
+    return Vector3.zero
+end
+
+-- // Changes The Mouse Position
+Script.Functions.MouseOffset = function(self, X, Y)
+    local NewPosition = Vector2.new(X, Y) - Excalibur.Silent.Fov.Offset
+    mousemoveabs(NewPosition.X, NewPosition.Y)
+end
+
+-- // Splits The Gun Name And Splits []
+Script.Functions.GetGunName = function(Name)
+    local split = string.split(string.split(Name, "[")[2], "]")[1]
+    return split
+end
+
+-- // Gets Current Gun
+Script.Functions.GetCurrentWeaponName = function()
+    if Client.Character and Client.Character:FindFirstChildWhichIsA("Tool") then
+       local Tool =  Client.Character:FindFirstChildWhichIsA("Tool")
+       if string.find(Tool.Name, "%[") and string.find(Tool.Name, "%]") and not string.find(Tool.Name, "Wallet") and not string.find(Tool.Name, "Phone") then
+          return Script.Functions.GetGunName(Tool.Name)
+       end
+    end
+    return nil
+end
+
+-- // Drawing Function With Property Attached
+Script.Functions.NewDrawing = function(Type, Properties)
+    local NewDrawing = Drawing.new(Type)
+    for i, v in next, Properties or {} do
+        NewDrawing[i] = v
+    end
+    return NewDrawing
+end
+
+-- // Draws For The New Players Joining For Esp
+Script.Functions.NewPlayer = function(Plr)
+    Script.EspPlayers[Plr] = {
+        Name = Script.Functions.NewDrawing("Text", {Color = Color3.fromRGB(255,2550, 255), Outline = true, Visible = false, Center = true, Size = 13, Font = 0}),
+        
+        BoxOutline = Script.Functions.NewDrawing("Square", {Color = Color3.fromRGB(0, 0, 0), Thickness = 3, Visible = false}),
+        Box = Script.Functions.NewDrawing("Square", {Color = Color3.fromRGB(255, 255, 255), Thickness = 1, Visible = false}),
+        
+        HealthBarOutline = Script.Functions.NewDrawing("Line", {Color = Color3.fromRGB(0, 0, 0), Thickness = 3, Visible = false}),
+        HealthBar = Script.Functions.NewDrawing("Line", {Color = Color3.fromRGB(0, 255, 0), Thickness = 1, Visible = false}),
+        HealthText = Script.Functions.NewDrawing("Text", {Color = Color3.fromRGB(0, 255, 0), Outline = true, Visible = false, Center = true, Size = 13, Font = 0}),
+        
+        ArmorBarOutline = Script.Functions.NewDrawing("Line", {Color = Color3.fromRGB(0, 0, 0), Thickness = 3, Visible = false}),
+        ArmorBar = Script.Functions.NewDrawing("Line", {Color = Color3.fromRGB(0, 255, 0), Thickness = 1, Visible = false}),
+        ArmorText = Script.Functions.NewDrawing("Text", {Color = Color3.fromRGB(0, 255, 0), Outline = true, Visible = false, Center = true, Size = 13, Font = 0}),
+        
+        Distance = Script.Functions.NewDrawing("Text", {Color = Color3.fromRGB(255, 255, 255), Outline = true, Visible = false, Center = true, Size = 13, Font = 0}),
+        
+        Tool = Script.Functions.NewDrawing("Text", {Color = Color3.fromRGB(255, 255, 255), Outline = true, Visible = false, Center = true, Size = 13, Font = 0}),
+        
+        Flag = Script.Functions.NewDrawing("Text", {Color = Color3.fromRGB(255, 255, 255), Outline = true, Visible = false, Center = true, Size = 13, Font = 0}),
+        
+        Tracer = Script.Functions.NewDrawing("Line", {Color = Color3.fromRGB(255, 255, 244), Thickness = 1, Visible = false}),
+    }
+end
+
+-- // The Notification Ui Function
+Script.Functions.CreateNotification = function(Text, CustomColor)
+	local Gap = 25
+	local Width = 18
+	local Alpha = 255
+	local Time = 0
+	local EStep = 0
+	local EEStep = 0.02
+	local InSety = 0
+
+	local Note = {
+		Enabled = true,
+		TargetPos = Vector2.new(50, 33),
+		Size = Vector2.new(200, Width),
+		
+		Drawings = {
+		    Outline = Script.Functions.NewDrawing("Square", {Size = Vector2.new(202, Width + 2), Filled = false, Visible = true, Thickness = 1, Position = Vector2.new(), Color = Color3.new(0, 0, 0)}),
+			Fade = Script.Functions.NewDrawing("Square", {Size = Vector2.new(202, Width + 2), Filled = false, Visible = true, Thickness = 1, Position = Vector2.new(), Color = Color3.new(0, 0, 0)}),
+		},
+        
+		Remove = function(self, Part)
+			if Part.Position.x < Part.Size.x then
+				for _, v in pairs(self.Drawings) do
+					v:Remove()
+					v = false
+				end
+				self.Enabled = false
+			end
+		end,
+
+		Update = function(self, Number, ListLength, Dt)
+			local Pos = self.TargetPos
+			local indexOffset = (ListLength - Number) * Gap
+            
+			if InSety < indexOffset then
+				InSety = InSety - (InSety - indexOffset) * 0.2
+			else
+				InSety = indexOffset
+			end
+
+			local Size = self.Size
+			local LastPos = Vector2.new(Pos.x - Size.x / Time - (Alpha / 255 * -Size.x + Size.x), Pos.y + InSety)
+			self.Pos = LastPos
+			
+			local CurrentPos = {
+				X = math.ceil(LastPos.x),
+				Y = math.ceil(LastPos.y),
+				W = math.floor(Size.x - (255 - Alpha) / (255 * 70)),
+				H = Size.y,
+			}
+			
+			local Fade = math.min(Time * 12, Alpha)
+			Fade = Fade > 255 and 255 or Fade < 0 and 0 or Fade
+
+			if self.Enabled then
+				local LineRepeat = 1
+				for i, v in pairs(self.Drawings) do
+					v.Transparency = Fade / 255
+					if type(i) == ("number") then
+						v.Position = Vector2.new(CurrentPos.X + 1, CurrentPos.Y + i)
+						v.Size = Vector2.new(CurrentPos.W - 2, 1)
+					elseif i == ("Image") then
+					    v.Position = LastPos + Vector2.new(6, 2)
+					elseif i == ("Text") then
+						v.Position = LastPos + Vector2.new(25, 2)
+					elseif i == ("Outline") then
+						v.Position = Vector2.new(CurrentPos.X, CurrentPos.Y)
+						v.Size = Vector2.new(CurrentPos.W, CurrentPos.H)
+					elseif i == ("Fade") then
+						v.Position = Vector2.new(CurrentPos.X - 1, CurrentPos.Y - 1)
+						v.Size = Vector2.new(CurrentPos.W + 2, CurrentPos.H + 2)
+						local T = (200 - Fade) / 255 / 3
+						v.Transparency = T < 0.4 and 0.4 or T
+					elseif i:find("line") then
+						v.Position = Vector2.new(CurrentPos.X + LineRepeat, CurrentPos.Y + 1)
+						LineRepeat = LineRepeat + 1
+					end
+				end
+
+				Time = Time + EStep * Dt * 128 
+				EStep = EStep + EEStep * Dt * 64
+			end
+		end,
+
+		Fade = function(self, Number, Len, Dt)
+			if self.Pos.x > self.TargetPos.x - 0.2 * Len or self.Fading then
+				if not self.Fading then
+					EStep = 0
+				end
+				self.Fading = true
+				Alpha = Alpha - EStep / 4 * Len * Dt * 50
+				EEStep = EEStep + 0.01 * Dt * 100
+			end
+			
+            if Alpha <= 0 then
+				self:Remove(self.Drawings[1])
+			end
+		end,
+	}
+
+    for i = 1, Note.Size.y - 2 do
+    	local X = 0.28 - i / 80
+    	Note.Drawings[i] = Script.Functions.NewDrawing("Square", {Size = Vector2.new(200, 1), Filled = true, Visible = true, Thickness = 1, Position = Vector2.new(), Color = Color3.new(X, X, X)})
+    end
+    
+    local C = CustomColor or Color3.fromRGB(0, 89, 255)
+    Note.Drawings.Text = Script.Functions.NewDrawing("Text", {Size = 13,Text = Text , Visible = true, Center = false, Outline = true, Font = 2, Position = Vector2.new(), Color = Color3.new(1, 1, 1)})
+    Note.Drawings.Image = Script.Functions.NewDrawing("Image", {Size = Vector2.new(15,15), Visible = true, Position = Vector2.new(), Data = ExcaliburLogo})
+
+    if Note.Drawings.Text.TextBounds.x + 7 > Note.Size.x then
+    	Note.Size = Vector2.new(Note.Drawings.Text.TextBounds.x + 27, Note.Size.y)
+    end
+    
+    Note.Drawings.line = Script.Functions.NewDrawing("Square", {Size = Vector2.new(1, Note.Size.y - 2), Filled = true, Visible = true, Thickness = 1, Position = Vector2.new(), Color = C})
+    Note.Drawings.line1 = Script.Functions.NewDrawing("Square", {Size = Vector2.new(1, Note.Size.y - 2), Filled = true, Visible = true, Thickness = 1, Position = Vector2.new(), Color = C})
+    Script.NotifyNote[#Script.NotifyNote + 1] = Note
+end
+
+-- // Gets The Closest Part Of The Character To Cursor
+Script.Functions.GetClosestBodyPart = function(Char)
+    local Distance = math.huge
+    local ClosestPart = nil
+    local Filterd = {}
+
+    local Parts = Char:GetChildren()
+    for _, v in pairs(Parts) do
+        if Excalibur.Silent.UseWhitelistedParts and table.find(Excalibur.Silent.WhitelistedPart, v.Name) == nil then continue end
+        if v:IsA("MeshPart") and v:IsA("BasePart") and Script.Functions.OnScreen(v) then
+            table.insert(Filterd, v)
+            for _, v in pairs(Filterd) do                
+                local Magnitude = Script.Functions.GetMagnitudeFromMouse(v)
+                if Magnitude < Distance then
+                    ClosestPart = v
+                    Distance = Magnitude
+                end
+            end
+        end
+    end
+    return ClosestPart
+end
+
+-- // Gets An Random Part Of The Character
+Script.Functions.GetRandomBodyPart = function(Char)
+    local CurrentParts = {}
+    local Parts = Char:GetChildren()
+    
+    for _, v in pairs(Parts) do
+        if Excalibur.Silent.UseWhitelistedParts and table.find(Excalibur.Silent.WhitelistedPart, v.Name) == nil then continue end
+        if v:IsA("MeshPart") and v:IsA("BasePart") and Script.Functions.OnScreen(v) then
+            table.insert(CurrentParts, v)
+        end
+    end
+    
+    local Randomize = CurrentParts[math.random(1, #CurrentParts)]
+    return Randomize
+end
+
+-- // Gets The Closest Point From Cursor
+Script.Functions.GetClosestPointOnPart = function(Part)
+    local Transform = Part.CFrame:PointToObjectSpace(Mouse.Hit.Position)
+    return Part.CFrame * Vector3.new(
+        math.clamp(Transform.X, - Part.Size.X % (Excalibur.Silent.ClosestPointScale / 2), Part.Size.X % (Excalibur.Silent.ClosestPointScale / 2)), 
+        math.clamp(Transform.Y, - Part.Size.Y % (Excalibur.Silent.ClosestPointScale / 2), Part.Size.Y % (Excalibur.Silent.ClosestPointScale / 2)), 
+        math.clamp(Transform.Z, - Part.Size.Z % (Excalibur.Silent.ClosestPointScale / 2), Part.Size.Z % (Excalibur.Silent.ClosestPointScale / 2))
+    )
+end
+
+-- // Mod Detection Function
+Script.Functions.CheckIfMod = function(Plr)
+    if Excalibur.ModDetection.Enabled then
+        if (game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Creator.CreatorType == "Group" and true or false) == true then
+            local GetId = game:GetService("GroupService"):GetGroupInfoAsync(game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Creator.CreatorTargetId).Id
+            local GroupId = tonumber(GetId)
+            
+            if Plr:IsInGroup(GroupId) and Plr:GetRankInGroup(GroupId) > Excalibur.ModDetection.Rank then
+                if Excalibur.ModDetection.Method == ("Kick") then 
+                    task.wait(Excalibur.ModDetection.Delay)
+                    Client:Kick("[EXCALIBUR] " .. Exalibur.ModDetection.Message .. tostring(Plr))
+                elseif Excalibur.ModDetection.Method == ("Notification") then
+                    Script.Functions.CreateNotification("[EXCALIBUR] " .. Exalibur.ModDetection.Message .. tostring(Plr), Color3.fromRGB(0, 89, 255))'
+				elseif Excalibur.ModDetection.Method == ("Kick") and Excalibur.ModDetection.LegitKick then
+					Client:Kick("Check your internet connection and try again.")
+                end
+            end
+        end
+    end
+end
+
+-- // Gets The Closest Player For Cursor (Silent Aim)
+Script.Functions.GetClosestPlayer = function(Mode)
+    local Target, Closest, HitChance = nil, math.huge, Script.Functions.CalculateChance(Excalibur.Silent.HitChance)
+    
+    if not HitChance then
+        return nil
+    end
+    if Mode then
+        for _, v in pairs(Players:GetPlayers()) do
+            if v.Character and v ~= Client and v.Character:FindFirstChild("HumanoidRootPart") then
+                if not Script.Functions.OnScreen(v.Character.HumanoidRootPart) then continue end
+                if Excalibur.UniversalCheck.WallCheck and not Script.Functions.WallCheck(v.Character.HumanoidRootPart.Position, v.Character) then continue end
+                local Distance = Script.Functions.GetMagnitudeFromMouse(v.Character.HumanoidRootPart)
+                if (Excalibur.Silent.DotLock and Script.Drawing.SilentCircle.Radius + (Distance * 0.3) < Distance) then continue end
+                if Distance < Closest then
+                    Closest = Distance
+                    Target = v
+                end
+            end
+        end
+    else
+        if Excalibur.Silent.DotLockAimAssist and Script.Functions.Alive(AimTarget) then
+            Target = AimTarget
+        elseif Excalibur.Silent.DotLockAimAssist == false then
+            Target = DotLock
+        end
+    end
+    
+    if Script.Functions.Alive(Target) then
+        local Velocity = Script.Functions.ComPlexVelocity(Target, Target.Character.HumanoidRootPart.Position, false)
+        CurrentVelocity = Velocity
+    else
+        CurrentVelocity = Vector3.zero
+    end
+
+    return Target
+end
+
+-- // Target Check For Silent Aim Target
+Script.Functions.SilentCheck = function(Plr)
+    if Excalibur.UniversalCheck.KoCheck and Plr.Character:FindFirstChild("BodyEffects") then
+        local KoCheck = false
+        if Plr.Character.BodyEffects:FindFirstChild("K.O") then
+            KoCheck = Plr.Character.BodyEffects["K.O"].Value
+        elseif Plr.Character.BodyEffects:FindFirstChild("KO") then
+            KoCheck = Plr.Character.BodyEffects.KO.Value
+        end
+        local Grabbed = Plr.Character:FindFirstChild("GRABBING_CONSTRAINT") ~= nil
+        if KoCheck or Grabbed then 
+            return false 
+        end
+    end
+    if Excalibur.UniversalCheck.FriendCheck and table.find(Script.Friends, Plr) then
+        return false  
+    end
+    if Excalibur.UniversalCheck.TargetDeathCheck and Plr.Character:FindFirstChild("Humanoid") and Plr.Character.Humanoid.health < 4 then
+        return false 
+    end
+    if Excalibur.UniversalCheck.ForceFieldCheck and Plr.Character:FindFirstChildOfClass("ForceField") then
+        return false
+    end
+    if Excalibur.UniversalCheck.InVisibleCheck and Plr.Character:FindFirstChild("Head") and Plr.Character.Head.Transparency > 0.5 then
+        return false  
+    end
+    if Excalibur.UniversalCheck.CrewCheck and Script.Functions.FindCrew(Plr) and Plr.DataFolder.Information:FindFirstChild("Crew").Value ~= Client.DataFolder.Information:FindFirstChild("Crew").Value then 
+        return false  
+    end
+    if Excalibur.UniversalCheck.TeamCheck and Client.Team ~= nil and Plr.Team ~= nil and Plr.Team == Client.Team then 
+        return false 
+    end
+    return true
+end
+
+-- // Gets The Closest Part From The Target And Checks If AimAssist Is On To Save Fps
+Script.Functions.GetClosestPartMethod = function(Plr)
+    local ClosestPart, PartClosest, Filterd = nil, math.huge, {}
+    
+    if Excalibur.Silent.LegitMode then
+        if Excalibur.Silent.ClosestPart == false and Plr.Character:FindFirstChild(Excalibur.Silent.Part) then
+            return Plr.Character[Excalibur.Silent.Part]
+        elseif AimTarget and Excalibur.AimAssist.ClosestPart and Plr.Character:FindFirstChild(Excalibur.AimAssist.Part) then
+            return Plr.Character[Excalibur.AimAssist.Part]
+        end
+        return nil
+    end
+    
+    if Script.Functions.Alive(Plr) then
+        if SilentTarget.Character.Humanoid:GetState() == Enum.HumanoidStateType.Freefall then
+            local AirHitChance = Script.Functions.CalculateChance(Excalibur.Silent.AirHitChance)
+            if not AirHitChance then
+                return nil
+            end
+            if Excalibur.Silent.UseAirPart and SilentTarget.Character:FindFirstChild(Excalibur.Silent.AirPart) then
+                return SilentTarget.Character[Excalibur.Silent.AirPart]
+            end
+        else
+            if Excalibur.Silent.UseAirPart and SilentTarget.Character:FindFirstChild(Script.SavedValue.SilentPart) then
+                return SilentTarget.Character[Script.SavedValue.SilentPart]
+            end
+        end
+        
+        if Excalibur.Silent.ClosestPart == false and Plr.Character:FindFirstChild(Excalibur.Silent.Part) then
+            local PartDistance = Script.Functions.GetMagnitudeFromMouse(Plr.Character[Excalibur.Silent.Part])
+
+            if (Excalibur.Silent.DotLock == false and Script.Drawing.SilentCircle.Radius + 4 > PartDistance) or Excalibur.Silent.DotLock == true then
+                return Plr.Character[Excalibur.Silent.Part]
+            end
+            return nil
+        end
+        
+        local Parts = Plr.Character:GetChildren()
+        for _, v in pairs(Parts) do
+            if Excalibur.Silent.UseWhitelistedParts and table.find(Excalibur.Silent.WhitelistedPart, v.Name) == nil then continue end
+            if v:IsA("MeshPart") and v:IsA("BasePart") and Script.Functions.OnScreen(v) then
+                table.insert(Filterd, v)
+                for _, v in pairs(Filterd) do
+                    local Mag = Script.Functions.GetMagnitudeFromMouse(v)
+                    if (Excalibur.Silent.DotLock == false and Excalibur.Silent.LegitMode == false and Script.Drawing.SilentCircle.Radius + 4 < Mag) then continue end
+                    if Mag < PartClosest then
+                        ClosestPart = v
+                        PartClosest = Mag
+                    end
+                end
+            end
+        end
+        
+        return ClosestPart
+    end
+    return nil
+end
+
+-- // Gets Closest Player From Mouse For AimAssist
+Script.Functions.GetClosestPlayer2 = function()
+    local Target, Distance, Closest = nil, nil, math.huge
+    
+    for _, v in pairs(Players:GetPlayers()) do
+        if v.Character and v ~= Client and v.Character:FindFirstChild("HumanoidRootPart") then
+            if not Script.Functions.OnScreen(v.Character.HumanoidRootPart) then continue end
+            if Excalibur.UniversalCheck.WallCheck and not Script.Functions.WallCheck(v.Character.HumanoidRootPart.Position, v.Character) then continue end
+        	if Excalibur.UniversalCheck.InVisibleCheck and v.Character:FindFirstChild("Head") then
+        		if v.Character.Head.Transparency > 0.5 then
+        			continue
+        		end
+        	end
+            if Excalibur.UniversalCheck.ForceField and not v.Character:FindFirstChildOfClass("ForceField") then
+                continue
+            end
+        	if Excalibur.UniversalCheck.CrewCheck and Script.Functions.FindCrew(v) and v.DataFolder.Information:FindFirstChild("Crew").Value ~= Client.DataFolder.Information:FindFirstChild("Crew").Value then
+        		continue
+        	end
+            if Excalibur.UniversalCheck.TeamCheck and Client.Team ~= nil and v.Team ~= nil and v.Team ~= Client.Team then
+                continue
+            end
+            if Excalibur.UniversalCheck.FriendCheck and table.find(Script.Friends, v) ~= nil then
+                continue
+            end
+            local Distance = Script.Functions.GetMagnitudeFromMouse(v.Character.HumanoidRootPart)
+            if Distance < Closest then
+                if (Excalibur.AimAssist.UseCircleRadius and Script.Drawing.AimAssistCircle.Radius + (Distance * 0.3) < Distance) then continue end
+                Closest = Distance
+                Target = v
+            end
+        end
+    end
+
+    return Target
+end
+
+-- // Main Functions For The BeizerManager Functions
+Script.BeizerManager.__index = Script.BeizerManager
+
+-- // The Main Function That Makes It Work
+Script.BeizerManager.New = function()
+    local self = setmetatable({}, Script.BeizerManager)
+    
+    self.T = 0
+    self.T_Threshold = 0.99995
+    self.StartPoint = Vector2.new()
+    self.EndPoint = Vector2.new()
+    self.CurvePoints = {
+        Vector2.new(1, 1),
+        Vector2.new(1, 1)
+    }
+    self.Active = false
+    self.Smoothness = 0.0025
+    self.DrawPath = false
+    self.Function = Script.Functions.MouseOffset
+
+    self.Started = false
+
+    return self
+end
+
+-- // Changes Current self Propertiesself.T 
+Script.BeizerManager.ChangeData = function(self, Data)
+    self.StartPoint = (self.GetStartPoint() or Data.StartPoint)
+    self.EndPoint = self.ModifyEndPoint(Data.TargetPosition)
+    self.Smoothness = Data.Smoothness or self.Smoothness
+    self.CurvePoints = Data.CurvePoints or self.CurvePoints
+    self.DrawPath = Data.DrawPath or self.DrawPath
+
+    self.T = 0
+    self.Active = true
+end
+
+-- // Calculates Every Points For More Accuracy
+Script.BeizerManager.CubicCurve = function(T, StartPoint, EndPoint, ControlPointA, ControlPointB)
+    local T1 = (1 - T)
+
+    local A = T1^3 * StartPoint
+    local B = 3 * T1^2 * T * ControlPointA
+    local C = 3 * T1 * T^2 * ControlPointB
+    local D = T^3 * EndPoint
+    
+    return A + B + C + D
+end
+
+-- // Controls And Calculates StartPoint And Other Stuff
+Script.BeizerManager.DoControlPoint = function(StartPoint, EndPoint, ControlPointA, ControlPointB)
+    local Change = (EndPoint - StartPoint)
+
+    local A = StartPoint + (Change * ControlPointA)
+    local B = StartPoint + (Change * ControlPointB)
+    return A, B
+end
+
+-- // Draws Circle Where The CurvePosition And The Client Position
+Script.BeizerManager.DrawPathFunc = function(CurvePosition, A, B)
+    local Path = Script.Functions.NewDrawing("Circle", {Color = Color3.fromRGB(255, 150, 150), Radius = 2, Visible = true, Position = CurvePosition,})
+    task.delay(1, function()
+        Path:Remove()
+    end)
+
+    local ControlPointA = Script.Functions.NewDrawing("Circle", {Color = Color3.fromRGB(255, 150, 255), Radius = 5, Visible = true, Position = A,})
+    task.delay(1, function()
+        ControlPointA:Remove()
+    end)
+
+    local ControlPointB = Script.Functions.NewDrawing("Circle", {Color = Color3.fromRGB(255, 150, 255), Radius = 5, Visible = true, Position = B,})
+    task.delay(1, function()
+        ControlPointB:Remove()
+    end)
+end
+
+-- // Changes The self For The Curving To Happend
+Script.BeizerManager.DoIteration = function(self)
+    if (self.Active == false) then
+        return
+    end
+    local BeizerCurve = self.CubicCurve
+    local T = self.T
+    while (T <= 1 and self.Active) do RS.RenderStepped:Wait()
+        T = T + self.Smoothness
+        if (T >= self.T_Threshold) then
+            local clampedT = math.clamp(T, 0, 1)
+            local New = self.StartPoint:Lerp(self.EndPoint, clampedT)
+
+            self:Function(New.X, New.Y)
+        else
+            local A, B = self.DoControlPoint(self.StartPoint, self.EndPoint, unpack(self.CurvePoints))
+            local CurvePosition = BeizerCurve(T, self.StartPoint, self.EndPoint, A, B)
+                
+            if (self.DrawPath) then
+                Script.BeizerManager.DrawPathFunc(CurvePosition, A, B)
+            end
+            self:Function(CurvePosition.X, CurvePosition.Y)
+        end
+    end
+    self.Active = false
+end
+
+-- // Modifies The EndPoint Just For Double Checks
+Script.BeizerManager.ModifyEndPoint = function(EndPoint)
+    return EndPoint
+end
+
+-- // Starts The Motion
+Script.BeizerManager.Start = function(self)
+    self.Started = true
+
+    local Thread = coroutine.resume(coroutine.create(function()
+        while (self.Started) do RS.RenderStepped:Wait()
+            self:DoIteration()
+        end
+    end))
+
+    return Thread
+end
+
+-- // Stops The Motion
+Script.BeizerManager.Stop = function(self)
+    self.Started = false
+end
+
+-- // Stops The Current Motion
+Script.BeizerManager.StopCurrent = function(self)
+    self.Active = false
+    self.T = 0
+end
+
+-- // Gets Camera Instead Of Mouse
+Script.BeizerManager.CameraMode = function(self)
+    self.GetStartPoint = function()
+        local Pitch, Yaw, _ = Camera.CFrame:ToEulerAnglesYXZ()
+        local StartPoint = Vector2.new(Pitch, Yaw)
+        return StartPoint
+    end
+
+    self.ModifyEndPoint = function(EndPoint)
+        local LookAtEndPoint = CFrame.lookAt(Camera.CFrame.Position, EndPoint)
+        local Pitch, Yaw, _ = LookAtEndPoint:ToEulerAnglesYXZ()
+        EndPoint = Vector2.new(Pitch, Yaw)
+        return EndPoint
+    end
+
+    self.Function = function(self, Pitch, Yaw)
+        local RotationMatrix = CFrame.fromEulerAnglesYXZ(Pitch, Yaw, 0)
+        Camera.CFrame = CFrame.new(Camera.CFrame.Position) * RotationMatrix
+    end
+
+    self.DrawPathFunc = function()
+        -- // Working On It
+    end
+end
+
+-- // Gets Mouse Position ServerSided
+Script.BeizerManager.GetStartPoint = function()
+    return Uis:GetMouseLocation()
+end
+
+-- // Gets Mouse Instead Of Camera
+Script.BeizerManager.MouseMode = function(self)
+    self.GetStartPoint = Script.BeizerManager.GetStartPoint
+    self.ModifyEndPoint = Script.BeizerManager.ModifyEndPoint
+    self.Function = Script.Functions.MouseOffset
+    self.DrawPathFunc = Script.BeizerManager.DrawPathFunc
+end
+
+-- // Start BeizerCurve
+local ManagerA = Script.BeizerManager.New()
+local ManagerB = Script.BeizerManager.New()
+Script.BeizerCurve.ManagerA = ManagerA
+Script.BeizerCurve.ManagerB = ManagerB
+
+Script.BeizerCurve.AimTo = function(...)
+    ManagerA:ChangeData(...)
+end
+
+Script.BeizerCurve.AimToB = function(...)
+    ManagerB:ChangeData(...)
+end
+
+ManagerB:CameraMode()
+
+ManagerB.Function = function(self, Pitch, Yaw)
+    local RotationMatrix = CFrame.fromEulerAnglesYXZ(Pitch, Yaw, 0)
+    Utilities.SetCameraCFrame(CFrame.new(Camera.CFrame.Position) * RotationMatrix)
+end
+
+ManagerA:Start()
+ManagerB:Start()
+
+-- // Silent Get Part Position
+Script.Functions.GetPartPosition = function(Plr)
+    local TargetCF = nil
+    local TargetFalling = false
+    local SilentPos = nil
+    
+    if Excalibur.Silent.ClosestPoint then
+        TargetCF = ClosestPointCF
+    else
+        if Plr.Character:FindFirstChild(Excalibur.Silent.Part) then
+            TargetCF = Plr.Character[Excalibur.Silent.Part].Position
+        end
+    end
+
+    if Excalibur.Silent.AntiGroundShots and CurrentVelocity.Y < Excalibur.Silent.AntiGroundActivation then
+        TargetFalling = true
+    end
+    if TargetCF and CurrentVelocity then
+        SilentPos = TargetCF
+        if Excalibur.Silent.PredictMovement then 
+            if Excalibur.Silent.SilentV2 then
+                local Enabled = true
+                local Mag = (Plr.Character.Humanoid.MoveDirection).Magnitude
+                local SilentVel = Plr.Character.HumanoidRootPart.Velocity
+                if (SilentVel).Magnitude > 100 then
+                    Enabled = false
+                elseif SilentVel.Y > 50 then
+                    Enabled = false
+                elseif SilentVel.Y < -35 then
+                    Enabled = false
+                elseif SilentVel.Y > 75 then
+                    Enabled = false
+                elseif (SilentVel).Magnitude < 1 and Mag > 0.01 then
+                    Enabled = false
+                elseif (SilentVel).Magnitude > 5 and Mag < 0.01 then
+                    Enabled = false
+                end
+                if Enabled and Excalibur.UniversalCheck.WallCheckV2 and not Script.Functions.WallCheck(Plr.Character.HumanoidRootPart.Position + (SilentTarget.Character.HumanoidRootPart.Velocity * Excalibur.Silent.Prediction), Plr.Character) then
+                    return
+                end
+                if Enabled then
+                    if TargetFalling then
+                        SilentPos = SilentPos + (Vector3.new(SilentVel.X, (SilentVel.Y * Excalibur.Silent.AntiGroundValue), SilentVel.Z) * Excalibur.Silent.Prediction)
+                    else
+                        SilentPos = SilentPos + (SilentVel * Excalibur.Silent.Prediction)
+                    end
+                else
+                    if TargetFalling then
+                        SilentPos = SilentPos + (Vector3.new(CurrentVelocity.X, (CurrentVelocity.Y * Excalibur.Silent.AntiGroundValue), CurrentVelocity.Z) * Excalibur.Silent.Prediction)
+                    else
+                        SilentPos = SilentPos + (CurrentVelocity * Excalibur.Silent.Prediction)
+                    end
+                end
+            else
+                if TargetFalling then
+                    SilentPos = SilentPos + (Vector3.new(CurrentVelocity.X, (CurrentVelocity.Y * Excalibur.Silent.AntiGroundValue), CurrentVelocity.Z) * Excalibur.Silent.Prediction)
+                else
+                    SilentPos = SilentPos + (CurrentVelocity * Excalibur.Silent.Prediction)
+                end
+            end
+        end
+        if Excalibur.Silent.RandomizePoint then
+            local RandomizePointValue = Excalibur.Silent.RandomizePointValue 
+            SilentPos = (SilentPos + Script.Functions.RandomVec3(RandomizePointValue, 0.01))
+        end
+    end
+    if SilentPos then
+        if Excalibur.Silent.LegitMode then
+            local PartPos = Camera:WorldToScreenPoint(SilentPos)
+            local GetScreenPos = Script.Functions.GetFovPosition()
+            local Magnitude = (Vector2.new(PartPos.X, PartPos.Y) - GetScreenPos).Magnitude
+
+            if (Excalibur.Silent.DotLock == false and Script.Drawing.SilentCircle.Radius + 4 > Magnitude) or Excalibur.Silent.DotLock == true then
+                return SilentPos
+            end
+        else
+            return SilentPos
+        end
+    end
+    return nil
+end
+
+local MousePosChanger2 = nil 
+MousePosChanger2 = hookmetamethod(game, "__index", function(self, Index)
+    if not checkcaller() and Excalibur.Silent.Enabled and Excalibur.Silent.AntiAimViewer == false and self == Mouse and Script.Functions.Alive(SilentTarget) then
+        if Index == ("Hit") then
+            local EndPoint = Script.Functions.GetPartPosition(SilentTarget)
+            if EndPoint then
+                return EndPoint
+            end
+        elseif Index == ("Target") and SilentTarget.Character:FindFirstChild(Excalibur.Silent.Part) then 
+            return SilentTarget.Character[Excalibur.Silent.Part]
+        end
+    end
+    return MousePosChanger2(self, Index)
+end)
+
+-- // The AimAssist Mouse Dragging/Check Functions
+Script.Functions.MouseChanger = function()
+    if Excalibur.AimAssist.Enabled and not Uis:GetFocusedTextBox() and Script.Functions.Alive(AimTarget) and Script.Functions.Alive(Client) and AimTarget.Character:FindFirstChild(Excalibur.AimAssist.Part) then
+        local EndPosition = nil
+        local TargetPos = AimTarget.Character[Excalibur.AimAssist.Part].Position
+
+        if Excalibur.AimAssist.ThirdPerson and Excalibur.AimAssist.FirstPerson == false then
+            if (Camera.Focus.p - Camera.CoordinateFrame.p).Magnitude < 1 then
+                return
+            end
+        elseif Excalibur.AimAssist.ThirdPerson == false and Excalibur.AimAssist.FirstPerson then
+            if (Camera.Focus.p - Camera.CoordinateFrame.p).Magnitude > 1 then
+                return
+            end
+        end
+        CurrentVelocity2 = Script.Functions.ComPlexVelocity(AimTarget, AimTarget.Character.HumanoidRootPart.Position, true)
+        if CurrentVelocity2 == nil then return end
+        if Excalibur.AimAssist.EnableChance then
+            local Chance = Script.Functions.CalculateChance(Excalibur.AimAssist.Chance)
+            if not Chance then
+                return
+            end
+        end
+        if Excalibur.UniversalCheck.ToolOut and not Client.Character:FindFirstChildWhichIsA("Tool") then
+            return
+        end
+        if Excalibur.UniversalCheck.ForceFieldCheck and AimTarget.Character:FindFirstChildOfClass("ForceField") then
+            AimTarget = nil
+            CurrentVelocity2 = Vector3.zero
+            return
+        end
+        if Excalibur.AimAssist.RandomPart or Excalibur.AimAssist.ClosestPart then
+            if Script.Functions.OnScreen(AimTarget.Character.HumanoidRootPart) then
+                if Excalibur.AimAssist.RandomPart then
+                    local RandomizedPart = Script.Functions.GetRandomBodyPart(AimTarget.Character)
+                    if RandomizedPart ~= nil then
+                        Excalibur.AimAssist.Part = tostring(RandomizedPart)
+                    end
+                elseif Excalibur.AimAssist.ClosestPart then
+                    local ClosestPart = Script.Functions.GetClosestBodyPart(AimTarget.Character)
+                    Excalibur.AimAssist.Part = tostring(ClosestPart)
+                end
+            else
+                if Excalibur.AimAssist.Method == ("Mouse") then
+                    return
+                end
+            end
+        end
+        if Excalibur.AimAssist.Advanced.WallCheckV2 and not Script.Functions.WallCheck(AimTarget.Character.HumanoidRootPart.Position, AimTarget.Character) then 
+            return
+        end
+        if Excalibur.AimAssist.DisableOutSideCircle then
+            local Magnitude = Script.Functions.GetMagnitudeFromMouse(AimTarget.Character.HumanoidRootPart)
+            if (Script.Drawing.AimAssistCircle.Radius + 4) < Magnitude then
+                return
+            end
+        end
+        if Excalibur.UniversalCheck.PlayerDeathCheck then
+            if Client.Character.Humanoid.health < 4 then
+                AimTarget = nil
+                CurrentVelocity2 = Vector3.zero
+                return
+            end
+        end
+        if Excalibur.UniversalCheck.KoCheck and AimTarget.Character:FindFirstChild("BodyEffects") then 
+            local Grabbed = AimTarget.Character:FindFirstChild("GRABBING_CONSTRAINT") ~= nil
+            local KoCheck = true
+            if AimTarget.Character.BodyEffects:FindFirstChild("K.O") then
+                KoCheck = AimTarget.Character.BodyEffects["K.O"].Value
+            elseif AimTarget.Character.BodyEffects:FindFirstChild("KO") then
+                KoCheck = AimTarget.Character.BodyEffects.KO.Value
+            end
+            if KoCheck or Grabbed then
+                AimTarget = nil
+                CurrentVelocity2 = Vector3.zero
+                return
+            end
+        end
+        if Excalibur.UniversalCheck.TargetDeathCheck then
+            if AimTarget.Character.Humanoid.health < 4 then
+                AimTarget = nil
+                CurrentVelocity2 = Vector3.zero
+                return
+            end
+        end
+        if Excalibur.AimAssist.AirSmoothness then
+            if AimTarget.Character.Humanoid:GetState() == Enum.HumanoidStateType.Freefall then
+                if Excalibur.AimAssist.AirSmoothness then
+                    Excalibur.AimAssist.Smoothness_X = Excalibur.AimAssist.AirSmoothness_X
+                    Excalibur.AimAssist.Smoothness_X = Excalibur.AimAssist.AirSmoothness_Y
+                end
+                if Excalibur.AimAssist.AirSmoothness then
+                    if Excalibur.AimAssist.Smoothness_X ~= Script.SavedValue.AimAssistSmoothX then
+                        Excalibur.AimAssist.Smoothness_X = Script.SavedValue.AimAssistSmoothX
+                    end
+                    if Excalibur.AimAssist.Smoothness_Y ~= Script.SavedValue.AimAssistSmoothY then
+                        Excalibur.AimAssist.Smoothness_Y = Script.SavedValue.AimAssistSmoothY
+                    end
+                end
+            end
+        end
+        
+        if FrameSkip and Excalibur.AimAssist.FrameSkip.TargetPart.Enabled and AimTarget.Character:FindFirstChild(Excalibur.AimAssist.FrameSkip.TargetPart.Part) then
+            if Excalibur.AimAssist.FrameSkip.UsePrediction then
+                EndPosition = AimTarget.Character[Excalibur.AimAssist.FrameSkip.TargetPart.Part].Position + (CurrentVelocity2 * Excalibur.AimAssist.Prediction)
+            else
+                EndPosition = AimTarget.Character[Excalibur.AimAssist.FrameSkip.TargetPart.Part].Position
+            end
+        elseif FrameSkip then
+            if Excalibur.AimAssist.FrameSkip.UsePrediction then
+                EndPosition = TargetPos + (CurrentVelocity2 * Excalibur.AimAssist.Prediction)
+            else
+                EndPosition = TargetPos
+            end
+        elseif Excalibur.AimAssist.PredictMovement then
+            EndPosition = TargetPos + (CurrentVelocity2 * Excalibur.AimAssist.Prediction)
+        else
+            EndPosition = TargetPos
+        end
+
+        if (EndPosition and (tick() - LastStutter) >= (Excalibur.AimAssist.Advanced.Stutter / 1000)) then
+            LastStutter = tick()
+            if Excalibur.AimAssist.Shake.Enabled and FrameSkip == false then
+                local Mag = math.ceil((EndPosition - Client.Character.HumanoidRootPart.Position).Magnitude)
+                EndPosition = EndPosition + (Vector3.new(
+                    math.random(-Mag * Excalibur.AimAssist.Shake.ShakeX, Mag * Excalibur.AimAssist.Shake.ShakeX), 
+                    math.random(-Mag * Excalibur.AimAssist.Shake.ShakeY, Mag * Excalibur.AimAssist.Shake.ShakeY), 
+                    math.random(-Mag * Excalibur.AimAssist.Shake.ShakeZ, Mag * Excalibur.AimAssist.Shake.ShakeZ)) / 1000
+                )
+            end
+            if Excalibur.AimAssist.Method == ("Mouse") then
+                local Vec2Pos = Camera:WorldToScreenPoint(EndPosition)
+                local InCrementX = (Vec2Pos.X - Excalibur.Silent.Fov.Offset.X) * (Excalibur.AimAssist.UseSmoothness and Excalibur.AimAssist.Smoothness_X or 1)
+                local InCrementY = (Vec2Pos.Y - Excalibur.Silent.Fov.Offset.Y) * (Excalibur.AimAssist.UseSmoothness and Excalibur.AimAssist.Smoothness_Y or 1)
+                if FrameSkip then
+                    FrameSkip = false
+                    InCrementX = ((Vec2Pos.X - Excalibur.Silent.Fov.Offset.X) - Mouse.X) * Excalibur.AimAssist.FrameSkip.Power
+                    InCrementY = ((Vec2Pos.Y - Excalibur.Silent.Fov.Offset.Y) - Mouse.Y) * Excalibur.AimAssist.FrameSkip.Power
+                end
+                mousemoverel(InCrementX, InCrementY)
+            elseif Excalibur.AimAssist.Method == ("Camera") then
+                local Vec3Pos = CFrame.new(Camera.CFrame.p, EndPosition)
+                if FrameSkip then
+                    FrameSkip = false
+                    Camera.CFrame = Camera.CFrame:Lerp(Vec3Pos, Excalibur.AimAssist.FrameSkip.Power, Excalibur.AimAssist.Advanced.EasingStyle, Excalibur.AimAssist.Advanced.EasingDirection)
+                    return
+                end
+                Camera.CFrame = Camera.CFrame:Lerp(Vec3Pos, (Excalibur.AimAssist.UseSmoothness and Excalibur.AimAssist.Smoothness_X or 1), Excalibur.AimAssist.Advanced.EasingStyle, Excalibur.AimAssist.Advanced.EasingDirection)
+            end
+        end
+    end
+end
+
+-- // Silent Features That Needs To Be Looping
+Script.Functions.SilentMisc = function()
+    if Excalibur.Silent.PingPrediction.Enabled and Excalibur.Silent.PredictMovement and Excalibur.Silent.GunSettings.Methods.Prediction == false and game:GetService("Stats") then
+        local Network = game:GetService("Stats"):FindFirstChild("Network")
+        if Network and Network:FindFirstChild("ServerStatsItem") then
+            local ServerStatsItem = Network.ServerStatsItem
+            if ServerStatsItem:FindFirstChild("Data Ping") then
+                local Ping = math.floor(ServerStatsItem["Data Ping"]:GetValue())
+                if Ping > 200 then
+                    Excalibur.Silent.Prediction = Excalibur.Silent.PingPrediction.Over200
+                elseif Ping > 190 then
+                    Excalibur.Silent.Prediction = Excalibur.Silent.PingPrediction.P190_200
+                elseif Ping > 180 then
+                    Excalibur.Silent.Prediction = Excalibur.Silent.PingPrediction.P180_190
+                elseif Ping > 170 then
+                    Excalibur.Silent.Prediction = Excalibur.Silent.PingPrediction.P170_180
+                elseif Ping > 160 then
+                    Excalibur.Silent.Prediction = Excalibur.Silent.PingPrediction.P160_170
+                elseif Ping > 150 then
+                    Excalibur.Silent.Prediction = Excalibur.Silent.PingPrediction.P150_160
+                elseif Ping > 140 then
+                    Excalibur.Silent.Prediction = Excalibur.Silent.PingPrediction.P140_150
+                elseif Ping > 130 then
+                    Excalibur.Silent.Prediction = Excalibur.Silent.PingPrediction.P130_140
+                elseif Ping > 120 then
+                    Excalibur.Silent.Prediction = Excalibur.Silent.PingPrediction.P120_130
+                elseif Ping > 110 then
+                    Excalibur.Silent.Prediction = Excalibur.Silent.PingPrediction.P110_120
+                elseif Ping > 100 then
+                    Excalibur.Silent.Prediction = Excalibur.Silent.PingPrediction.P100_110
+                elseif Ping > 90 then
+                    Excalibur.Silent.Prediction = Excalibur.Silent.PingPrediction.P90_100
+                elseif Ping > 80 then
+                    Excalibur.Silent.Prediction = Excalibur.Silent.PingPrediction.P80_90
+                elseif Ping > 70 then
+                    Excalibur.Silent.Prediction = Excalibur.Silent.PingPrediction.P70_80
+                elseif Ping > 60 then
+                    Excalibur.Silent.Prediction = Excalibur.Silent.PingPrediction.P60_70
+                elseif Ping > 50 then
+                    Excalibur.Silent.Prediction = Excalibur.Silent.PingPrediction.P50_60
+                elseif Ping > 40 then
+                    Excalibur.Silent.Prediction = Excalibur.Silent.PingPrediction.P40_50
+                elseif Ping > 30 then
+                    Excalibur.Silent.Prediction = Excalibur.Silent.PingPrediction.P30_40
+                elseif Ping > 20 then
+                    Excalibur.Silent.Prediction = Excalibur.Silent.PingPrediction.P20_30
+                elseif Ping > 10 then
+                    Excalibur.Silent.Prediction = Excalibur.Silent.PingPrediction.P10_20
+                end
+            end
+        end
+    end
+end
+
+local function generateNumber(prediction, offsetRange, decimalPrecision)
+    local randomOffset = (math.random() * offsetRange * 2 - offsetRange) / 10^decimalPrecision
+    return tonumber(string.format("%." .. decimalPrecision .. "f", prediction + randomOffset))
+end
+
+local function calculatePrediction(ping)
+    if ping <= 10 then
+        return generateNumber(0.07, 1, 6)
+    elseif ping <= 20 then
+        return generateNumber(0.107, 1, 8)
+    elseif ping <= 30 then
+        return generateNumber(0.112, 1, 7)
+    elseif ping <= 40 then
+        return generateNumber(0.117, 1, 9)
+    elseif ping <= 50 then
+        return generateNumber(0.1197, 1, 8)
+    elseif ping <= 60 then
+        return generateNumber(0.1215, 1, 7)
+    elseif ping <= 70 then
+        return generateNumber(0.123, 1, 7)
+    elseif ping <= 80 then
+        return generateNumber(0.1256, 1, 6)
+    elseif ping <= 90 then
+        return generateNumber(0.126, 1, 9)
+    elseif ping <= 100 then
+        return generateNumber(0.128, 1, 8)
+    elseif ping <= 110 then
+        return generateNumber(0.1306, 1, 9)
+    elseif ping <= 120 then
+        return generateNumber(0.135, 1, 9)
+    elseif ping <= 130 then
+        return generateNumber(0.1402340, 1, 7)
+    elseif ping <= 140 then
+        return generateNumber(0.1448644, 1, 6)
+    elseif ping <= 150 then
+        return generateNumber(0.148953231179, 1, 8)
+    elseif ping <= 160 then
+        return generateNumber(0.1528422, 1, 7)
+    elseif ping <= 170 then
+        return generateNumber(0.156876634, 1, 8)
+    elseif ping <= 180 then
+        return generateNumber(0.159864545, 1, 9)
+    elseif ping <= 190 then
+        return generateNumber(0.1633642, 1, 8)
+    else
+        return generateNumber(0.16747866, 1, 7)
+    end
+end
+
+local function updatePrediction()
+    local ping = Client:FindFirstChild("Ping")
+    if ping then
+        local averagePrediction = calculatePrediction(ping.Value)
+        Excalibur.Silent.Prediction = averagePrediction
+    end
+end
+
+if Excalibur.Silent.AdvancedPred then
+	if Excalibur.Silent.PingPrediction.Enabled then
+		Excalibur.Silent.PingPrediction = false
+	end
+	while true do
+    	updatePrediction()
+    	wait(2) -- Adjust the time interval as needed
+	end
+end
+
+-- // Gets Silent Target And Velocity
+Script.Functions.GetSilentTarget = function()
+    local Target = Script.Functions.GetClosestPlayer(not Excalibur.Silent.DotLock)
+
+    if Excalibur.Silent.AntiAimViewer == false and Script.Functions.Alive(Target) and Script.Functions.SilentCheck(Target) then 
+        SilentTarget = Target
+        local GetPart = Script.Functions.GetClosestPartMethod(Target)
+        if GetPart ~= nil then
+            Excalibur.Silent.Part = tostring(GetPart)
+            Script.SavedValue.SilentPart = tostring(GetPart)
+            if Excalibur.Silent.ClosestPoint then
+                ClosestPointCF = Script.Functions.GetClosestPointOnPart(GetPart)
+            end
+        else
+            SilentTarget = nil
+        end
+    else
+        SilentTarget = Target
+    end
+end
+
+-- // Update Properties Of Circle
+Script.Functions.UpdateFOV = function()
+    local GetScreenPos = Script.Functions.GetFovPosition()
+    Script.Drawing.AimAssistCircle.Visible = Excalibur.AimAssist.Fov.Visible
+    Script.Drawing.AimAssistCircle.Filled = Excalibur.AimAssist.Fov.Filled
+    Script.Drawing.AimAssistCircle.Color = Excalibur.AimAssist.Fov.Color
+    Script.Drawing.AimAssistCircle.Transparency = Excalibur.AimAssist.Fov.Transparency
+    if Excalibur.Silent.Fov.Method == ("Screen") then
+        Script.Drawing.AimAssistCircle.Position = Vector2.new(GetScreenPos.X, GetScreenPos.Y) - Excalibur.Silent.Fov.Offset
+    else
+        Script.Drawing.AimAssistCircle.Position = Vector2.new(GetScreenPos.X, GetScreenPos.Y + GuiS:GetGuiInset().Y) - Excalibur.Silent.Fov.Offset
+    end
+
+	Script.Drawing.AimAssistCircle.Radius = Excalibur.AimAssist.Fov.Radius * 3
+    
+    Script.Drawing.SilentCircle.Visible = Excalibur.Silent.Fov.Visible
+    Script.Drawing.SilentCircle.Color = Excalibur.Silent.Fov.Color
+    Script.Drawing.SilentCircle.Filled = Excalibur.Silent.Fov.Filled
+    Script.Drawing.SilentCircle.Transparency = Excalibur.Silent.Fov.Transparency
+    if Excalibur.Silent.Fov.StickyFov and Script.Functions.Alive(SilentTarget) and SilentTarget.Character:FindFirstChild(Excalibur.Silent.Part) then
+        local PartPos, OnScreen = Camera:WorldToViewportPoint(SilentTarget.Character[Excalibur.Silent.Part].Position)
+        if OnScreen then
+            local Magnitude = ((Vector2.new(PartPos.X, PartPos.Y) - Vector2.new(GetScreenPos.X, GetScreenPos.Y + GuiS:GetGuiInset().Y)) - Excalibur.Silent.Fov.Offset).Magnitude
+
+            if (Excalibur.Silent.DotLock == false and Script.Drawing.SilentCircle.Radius + 4 > Magnitude) or Excalibur.Silent.DotLock == true then
+                Script.Drawing.SilentCircle.Position = Vector2.new(PartPos.X, PartPos.Y) - Excalibur.Silent.Fov.Offset
+            else
+                if Excalibur.Silent.Fov.Method == ("Screen") then
+                    Script.Drawing.SilentCircle.Position = Vector2.new(GetScreenPos.X, GetScreenPos.Y) - Excalibur.Silent.Fov.Offset
+                else
+                    Script.Drawing.SilentCircle.Position = Vector2.new(GetScreenPos.X, GetScreenPos.Y + GuiS:GetGuiInset().Y) - Excalibur.Silent.Fov.Offset
+                end
+            end
+        else
+            if Excalibur.Silent.Fov.Method == ("Screen") then
+                Script.Drawing.SilentCircle.Position = Vector2.new(GetScreenPos.X, GetScreenPos.Y) - Excalibur.Silent.Fov.Offset
+            else
+                Script.Drawing.SilentCircle.Position = Vector2.new(GetScreenPos.X, GetScreenPos.Y + GuiS:GetGuiInset().Y) - Excalibur.Silent.Fov.Offset
+            end
+        end
+    else
+        if Excalibur.Silent.Fov.Method == ("Screen") then
+            Script.Drawing.SilentCircle.Position = Vector2.new(GetScreenPos.X, GetScreenPos.Y) - Excalibur.Silent.Fov.Offset
+        else
+            Script.Drawing.SilentCircle.Position = Vector2.new(GetScreenPos.X, GetScreenPos.Y + GuiS:GetGuiInset().Y) - Excalibur.Silent.Fov.Offset
+        end
+    end
+	Script.Drawing.SilentCircle.Radius = SilentFovRadius.Value * 3
+end
+
+-- // Updates Esp Posistions
+Script.Functions.UpdateEsp = function()
+    for i, v in pairs(Script.EspPlayers) do
+        if Excalibur.Esp.Enabled and i.Character and i.Character:FindFirstChild("Humanoid") and i.Character:FindFirstChild("HumanoidRootPart") and i.Character:FindFirstChild("Head") then
+            local Hum = i.Character.Humanoid
+            local Hrp = i.Character.HumanoidRootPart
+            
+            local Vector, OnScreen = Camera:WorldToViewportPoint(i.Character.HumanoidRootPart.Position)
+            local Size = (Camera:WorldToViewportPoint(Hrp.Position - Vector3.new(0, 3, 0)).Y - Camera:WorldToViewportPoint(Hrp.Position + Vector3.new(0, 2.6, 0)).Y) / 2
+            local BoxSize = Vector2.new(math.floor(Size * 1.5), math.floor(Size * 1.9))
+            local BoxPos = Vector2.new(math.floor(Vector.X - Size * 1.5 / 2), math.floor(Vector.Y - Size * 1.6 / 2))
+            local BottomOffset = BoxSize.Y + BoxPos.Y + 1
+            
+            if OnScreen then
+                if Excalibur.Esp.Name.Enabled then
+                    v.Name.Position = Vector2.new(BoxSize.X / 2 + BoxPos.X, BoxPos.Y - 16)
+                    v.Name.Outline = Excalibur.Esp.Name.OutLine
+                    v.Name.Text = Hum.DisplayName
+                    v.Name.Color = Excalibur.Esp.Name.Color
+                    v.Name.OutlineColor = Color3.fromRGB(0, 0, 0)
+                    v.Name.Font = 0
+                    v.Name.Size = Excalibur.Esp.TextSize
+
+                    v.Name.Visible = true
+                else
+                    v.Name.Visible = false
+                end
+
+                if Excalibur.Esp.Distance.Enabled and Client.Character and Client.Character:FindFirstChild("HumanoidRootPart") then
+                    v.Distance.Position = Vector2.new(BoxSize.X / 2 + BoxPos.X, BottomOffset)
+                    v.Distance.Outline = Excalibur.Esp.Distance.OutLine
+                    v.Distance.Text = "[" .. math.floor((Hrp.Position - Client.Character.HumanoidRootPart.Position).Magnitude) .. "m]"
+                    v.Distance.Color = Excalibur.Esp.Distance.Color
+                    v.Distance.OutlineColor = Color3.fromRGB(0, 0, 0)
+
+                    v.Distance.Font = 0
+                    v.Distance.Size = Excalibur.Esp.TextSize
+
+                    v.Distance.Visible = true
+                else
+                    v.Distance.Visible = false
+                end
+
+                if Excalibur.Esp.Tool.Enabled then
+                    if Excalibur.Esp.Distance.Enabled then
+                        v.Tool.Position = Vector2.new(BoxSize.X / 2 + BoxPos.X, BottomOffset + 13)
+                    else
+                        v.Tool.Position = Vector2.new(BoxSize.X / 2 + BoxPos.X, BottomOffset)
+                    end
+                    v.Tool.Outline = Excalibur.Esp.Tool.OutLine
+                    if i.Character:FindFirstChildWhichIsA("Tool") then
+                        if i.Character:FindFirstChild("GunScript", true) ~= nil or i.Character:FindFirstChild("FlameThrowerScript", true) ~= nil or i.Character:FindFirstChild("RPGScript", true) ~= nil then
+                            v.Tool.Text = i.Character:FindFirstChildWhichIsA("Tool").Name
+                        else
+                            v.Tool.Text = "[" .. i.Character:FindFirstChildWhichIsA("Tool").Name .. "]"
+                        end
+                    else
+                        v.Tool.Text = "[None]"
+                    end
+                    v.Tool.Color = Excalibur.Esp.Tool.Color
+                    v.Tool.OutlineColor = Color3.fromRGB(0, 0, 0)
+                    
+                    v.Tool.Font = 0
+                    v.Tool.Size = Excalibur.Esp.TextSize
+
+                    v.Tool.Visible = true
+                else
+                    v.Tool.Visible = false
+                end
+
+                if Excalibur.Esp.Box.Enabled then
+                    v.BoxOutline.Size = BoxSize
+                    v.BoxOutline.Position = BoxPos
+                    v.BoxOutline.Visible = Excalibur.Esp.Box.OutLine
+                    v.BoxOutline.Color = Color3.fromRGB(0, 0, 0)
+                    
+                    v.Box.Size = BoxSize
+                    v.Box.Position = BoxPos
+                    if Excalibur.Esp.TargetColor.Enabled and SilentTarget ~= nil and i == SilentTarget then
+                        v.Box.Color = Excalibur.Esp.TargetColor.Color
+                    elseif Excalibur.Esp.CrewColor.Enabled and Script.Functions.FindCrew(i) and i.DataFolder.Information:FindFirstChild("Crew").Value == Client.DataFolder.Information:FindFirstChild("Crew").Value then
+                        v.Box.Color = Excalibur.Esp.CrewColor.Color
+                    else
+                        v.Box.Color = Excalibur.Esp.Box.Color
+                    end
+                    v.Box.Visible = true
+                else
+                    v.BoxOutline.Visible = false
+                    v.Box.Visible = false
+                end
+
+                if Excalibur.Esp.HealthBar.Enabled then
+                    if Excalibur.Esp.HealthBar.HealthColor then
+                        local Health = i.Character.Humanoid.Health / i.Character.Humanoid.MaxHealth
+                        v.HealthBar.Color = Color3.fromHSV(Health * 0.3, 1, 1) 
+                    else
+                        v.HealthBar.Color = Excalibur.Esp.HealthBar.Color
+                    end
+
+                    v.HealthBar.From = Vector2.new((BoxPos.X - 5), BoxPos.Y + BoxSize.Y)
+                    v.HealthBar.To = Vector2.new(v.HealthBar.From.X, v.HealthBar.From.Y - (Hum.Health / Hum.MaxHealth) * BoxSize.Y)
+                    v.HealthBar.Visible = true
+
+                    v.HealthBarOutline.From = Vector2.new(v.HealthBar.From.X, BoxPos.Y + BoxSize.Y + 1)
+                    v.HealthBarOutline.To = Vector2.new(v.HealthBar.From.X, (v.HealthBar.From.Y - 1 * BoxSize.Y) - 1)
+                    v.HealthBarOutline.Color = Color3.fromRGB(0, 0, 0)
+                    v.HealthBarOutline.Visible = Excalibur.Esp.HealthBar.OutLine
+                else
+                    v.HealthBarOutline.Visible = false
+                    v.HealthBar.Visible = false
+                end
+
+                if Excalibur.Esp.HealthText.Enabled then
+                    local Offset = 22
+                    if Excalibur.Esp.ArmorBar.Enabled == false then
+                        Offset = Offset - 7
+                    end
+                    if Excalibur.Esp.HealthBar.Enabled == false then
+                        Offset = Offset - 7
+                    end
+
+                    if Excalibur.Esp.HealthText.HealthColor then
+                        local Health = i.Character.Humanoid.Health / i.Character.Humanoid.MaxHealth
+                        v.HealthText.Color = Color3.fromHSV(Health * 0.3, 1, 1) 
+                    else
+                        v.HealthText.Color = Excalibur.Esp.HealthText.Color
+                    end
+                    
+                    v.HealthText.Text = tostring(math.floor((Hum.Health / Hum.MaxHealth) * 100 + 0.5))
+                    v.HealthText.Position = Vector2.new((BoxPos.X - Offset), (BoxPos.Y + BoxSize.Y - 1 * BoxSize.Y) - 1)
+                    v.HealthText.OutlineColor = Color3.fromRGB(0, 0, 0)
+                    v.HealthText.Outline = Excalibur.Esp.HealthText.OutLine
+
+                    v.HealthText.Font = 0
+                    v.HealthText.Size = Excalibur.Esp.TextSize
+
+                    v.HealthText.Visible = true
+                else
+                    v.HealthText.Visible = false
+                end
+
+                if Excalibur.Esp.Flags.Enabled then
+                    local Offset = 10
+                    if Excalibur.Esp.ArmorBar.Enabled == false then
+                        Offset = Offset - 7
+                    end
+                    if Excalibur.Esp.HealthBar.Enabled == false then
+                        Offset = Offset - 7
+                    end
+                    if i.Character.HumanoidRootPart.Velocity.Magnitude > 120 and Excalibur.Esp.Flags.DesyncState then
+                        v.Flag.Text = "Desyncing"
+                    elseif i.Character.HumanoidRootPart.Velocity.Y > 2 and Excalibur.Esp.Flags.WalkingState then
+                        v.Flag.Text = "Jumping"
+                    elseif i.Character.HumanoidRootPart.Velocity.Y < -2 and Excalibur.Esp.Flags.WalkingState then
+                        v.Flag.Text = "Falling"
+                    elseif i.Character.HumanoidRootPart.Velocity.Magnitude > 2 and Excalibur.Esp.Flags.WalkingState then
+                        v.Flag.Text = "Walking"
+                    elseif i.Character.HumanoidRootPart.Velocity.Magnitude < 1 and Excalibur.Esp.Flags.WalkingState then
+                        v.Flag.Text = "Standing"
+                    end
+                    v.Flag.Position = Vector2.new((BoxPos.X - Offset) - (string.len(v.Flag.Text) * 3), (BoxPos.Y + BoxSize.Y - 1 * BoxSize.Y) + 22)
+                    v.Flag.Color = Excalibur.Esp.Flags.Color
+                    v.Flag.OutlineColor = Color3.fromRGB(0, 0, 0)
+                    v.Flag.Outline = Excalibur.Esp.Flags.OutLine
+
+                    v.Flag.Font = 0
+                    v.Flag.Size = Excalibur.Esp.TextSize
+
+                    v.Flag.Visible = true
+                else
+                    v.Flag.Visible = false
+                end
+
+                if Excalibur.Esp.Tracer.Enabled then
+                    if Excalibur.Esp.Tracer.Method == ("Screen") then
+                        v.Tracer.From = Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y)
+                    else
+                        v.Tracer.From = Vector2.new(Mouse.X, Mouse.Y + GuiS:GetGuiInset().Y)
+                    end
+                    v.Tracer.To = Vector2.new(Vector.X, Vector.Y)
+                    v.Tracer.Thickness = Excalibur.Esp.Tracer.Thickness
+                    v.Tracer.Color = Excalibur.Esp.Tracer.Color
+                    v.Tracer.Visible = true
+                else
+                    v.Tracer.Visible = false
+                end
+
+                if i.Character:FindFirstChild("BodyEffects") and i.Character:FindFirstChild("BodyEffects"):FindFirstChild("Armor") then
+                    if Excalibur.Esp.ArmorBar.Enabled then
+                        if Excalibur.Esp.HealthBar.Enabled then
+                            v.ArmorBar.From = Vector2.new((BoxPos.X - 9), BoxPos.Y + BoxSize.Y)
+                        else
+                            v.ArmorBar.From = Vector2.new((BoxPos.X - 5), BoxPos.Y + BoxSize.Y)
+                        end
+                        v.ArmorBar.To = Vector2.new(v.ArmorBar.From.X, v.ArmorBar.From.Y - (i.Character.BodyEffects.Armor.Value / 200) * BoxSize.Y)
+                        v.ArmorBar.Color = Excalibur.Esp.ArmorBar.Color
+                        v.ArmorBar.Visible = true
+
+                        v.ArmorBarOutline.From = Vector2.new(v.ArmorBar.From.X, BoxPos.Y + BoxSize.Y + 1)
+                        v.ArmorBarOutline.To = Vector2.new(v.ArmorBar.From.X, (v.ArmorBar.From.Y - 1 * BoxSize.Y) - 1)
+                        v.ArmorBarOutline.Color = Color3.fromRGB(0, 0, 0)
+                        v.ArmorBarOutline.Visible = Excalibur.Esp.ArmorBar.OutLine
+                    else
+                        v.ArmorBarOutline.Visible = false
+                        v.ArmorBar.Visible = false
+                    end
+                    if Excalibur.Esp.ArmorText.Enabled then
+                        local Offset = 22
+                        if Excalibur.Esp.ArmorBar.Enabled == false then
+                            Offset = Offset - 7
+                        end
+                        if Excalibur.Esp.HealthBar.Enabled == false then
+                            Offset = Offset - 7
+                        end
+                        v.ArmorText.Text = tostring(math.floor((i.Character.BodyEffects.Armor.Value / 2) + 0.5))
+                        if Excalibur.Esp.HealthText.Enabled then
+                            v.ArmorText.Position = Vector2.new((BoxPos.X - Offset), (BoxPos.Y + BoxSize.Y - 1 * BoxSize.Y) + 11)
+                        else
+                            v.ArmorText.Position = Vector2.new((BoxPos.X - Offset), (BoxPos.Y + BoxSize.Y - 1 * BoxSize.Y) - 1)
+                        end
+                        v.ArmorText.Color = Excalibur.Esp.ArmorText.Color
+                        v.ArmorText.OutlineColor = Color3.fromRGB(0, 0, 0)
+                        v.ArmorText.Outline = Excalibur.Esp.ArmorText.OutLine
+
+                        v.ArmorText.Font = 0
+                        v.ArmorText.Size = Excalibur.Esp.TextSize
+
+                        v.ArmorText.Visible = true
+                    else
+                        v.ArmorText.Visible = false
+                    end
+                else
+                    v.ArmorBarOutline.Visible = false
+                    v.ArmorBar.Visible = false
+                    v.ArmorText.Visible = false
+                end 
+            else
+                v.Name.Visible = false
+                v.BoxOutline.Visible = false
+                v.Box.Visible = false
+                v.HealthBarOutline.Visible = false
+                v.HealthBar.Visible = false
+                v.HealthText.Visible = false
+                v.ArmorBarOutline.Visible = false
+                v.ArmorBar.Visible = false
+                v.ArmorText.Visible = false
+                v.Distance.Visible = false
+                v.Tool.Visible = false
+                v.Flag.Visible = false
+                v.Tracer.Visible = false
+            end
+        else
+            v.Name.Visible = false
+            v.BoxOutline.Visible = false
+            v.Box.Visible = false
+            v.HealthBarOutline.Visible = false
+            v.HealthBar.Visible = false
+            v.HealthText.Visible = false
+            v.ArmorBarOutline.Visible = false
+            v.ArmorBar.Visible = false
+            v.ArmorText.Visible = false
+            v.Distance.Visible = false
+            v.Tool.Visible = false
+            v.Flag.Visible = false
+            v.Tracer.Visible = false
+        end
+    end
+end
+
+-- // Recreates An Table
+Script.Functions.GetTable = function(Table)
+    if type(Table) == ("table") then
+        local Writer = {}
+        Writer.__index = Writer
+    
+        Writer.New = function()
+            local self = setmetatable({}, Writer)
+            self.Indent = 0
+            self.Text = ""
+            return self
+        end
+    
+        Writer.WriteIndentation = function(self)
+            for i = 1, self.Indent do
+                self.Text = self.Text .. "\t"
+            end
+        end
+    
+        Writer.Write = function(self, Text)
+            self.Text = self.Text .. Text
+        end
+    
+        Writer.WriteLine = function(self, Text)
+            self.Text = self.Text .. Text .. "\n"
+        end
+    
+        Writer.WriteIndent = function(self, Text)
+            self:WriteIndentation()
+            self:Write(Text)
+        end
+    
+        Writer.IncIndent = function(self)
+            self.Indent = self.Indent + 1
+        end
+    
+        Writer.Unindent = function(self)
+            self.Indent = self.Indent - 1
+        end
+    
+        Writer.ToString = function(self)
+            return self.Text
+        end
+    
+        Writer.Clear = function(self)
+            self.Text = ""
+            self.Indent = 0
+        end
+    
+        local TableDump = {}
+        TableDump.__index = TableDump
+    
+        TableDump.New = function(Table)
+            local self = setmetatable({}, TableDump)
+            self.Writer = Writer.New()
+            self.Ot = Table
+            self.Memory = {}
+            self.VisitedTables = {}
+            return self
+        end
+    
+        TableDump.CacheGlobalMemory = function(self)
+            local CurrentTrack = {"_G"}
+            local Functions = {}
+    
+            Functions.MiniGuiCount = function(Table)
+                local Current = 0
+                for _, __ in pairs(Table) do
+                    Current = Current + 1
+                end
+                return Current
+            end
+    
+            Functions.CreateNamespace = function()
+                local NameSpace = ""
+                for Index, Value in pairs(CurrentTrack) do
+                    if Value ~= ("_G") and Value ~= ("package") then
+                        NameSpace = NameSpace .. Value .. "."
+                    end
+                end
+                return NameSpace
+            end
+    
+            Functions.MiniGuiCache = function(Table)
+                local Len = Functions.MiniGuiCount(Table)
+                local Current = 0
+                for Index, value in pairs(Table) do
+                    Current = Current + 1
+                    if type(value) == ("function") or type(value) == ("table") then
+                        if type(value) == ("table") and self.VisitedTables[value] == nil then
+                            self.VisitedTables[value] = Index
+                            CurrentTrack[#CurrentTrack + 1] = Index
+                            Functions.MiniGuiCache(value)
+                        end
+                        self.Memory[value] = Functions.CreateNamespace() .. Index
+                    end
+                    if Current == Len then
+                        table.remove(CurrentTrack, #CurrentTrack)
+                    end
+                end
+            end
+    
+            Functions.MiniGuiCache(_G)
+        end
+    
+        TableDump.Resolve = function(self)
+            self:CacheGlobalMemory()
+            local Functions = {}
+
+            Functions.MiniGuiResolveSpecial = function(Value)
+                if Value == _G then
+                    return "_G"
+                end
+                if self.Memory[Value] then
+                    return self.Memory[Value]
+                end
+                if type(Value) == ("table") then
+                    if self.VisitedTables[Value] ~= nil then
+                        if self.VisitedTables[Value] == true then
+                            return "{...}"
+                        end
+                        return self.VisitedTables
+                    end
+                    Functions.MiniGuiResolve(Value)
+                    return ""
+                elseif type(Value) == ("function") then
+                    return '"Function Couldnt Be Added: ' .. tostring(Value) .. '"'
+                end
+                return tostring(Value)
+            end
+    
+            Functions.MiniGuiResolveValue = function(Value)
+                if type(Value) == ("function") or type(Value) == ("table") then
+                    return Functions.MiniGuiResolveSpecial(Value)
+                elseif type(Value) == ("string") then
+                    return '"' .. tostring(Value) .. '"'
+                elseif type(Value) == ("number") and Value == math.huge then
+                    return "math.huge"
+                elseif type(Value) == ("number") and Value == math.pi then
+                    return "math.pi"
+                elseif typeof(Value) == ("Color3") then
+                    return "Color3.new(" .. tostring(Value) .. ")"
+                elseif typeof(Value) == ("Vector2") then
+                    return "Vector2.new(" .. tostring(Value) .. ")"
+                elseif typeof(Value) == ("Vector3") then
+                    return "Vector3.new(" .. tostring(Value) .. ")"
+                else
+                    return tostring(Value)
+                end
+            end
+    
+            Functions.MiniGuiCount = function(Table)
+                local Current = 0
+                for _, __ in pairs(Table) do
+                    Current = Current + 1
+                end
+                return Current
+            end
+    
+            Functions.MiniGuiResolve = function(Table, Index)
+                local Len = Functions.MiniGuiCount(Table)
+                local Current = 0
+
+                if Len ~= 0 then
+                    self.Writer:WriteLine("{")
+                else
+                    self.Writer:Write("{")
+                end
+
+                self.Writer:IncIndent()
+                self.VisitedTables[Table] = true
+
+                if Index then
+                    self.VisitedTables[Table] = Index
+                end
+
+                for Index, value in pairs(Table) do
+                    Current = Current + 1
+                    if type(Index) == ("string") then
+                        if string.find(Index, " ") then
+                            self.Writer:WriteIndent('["' .. Index .. '"] = ')
+                        else
+                            self.Writer:WriteIndent(Index .. " = ")
+                        end
+
+                        self.Writer:Write(Functions.MiniGuiResolveValue(value))
+                    elseif type(Index) == ("number") then
+                        self.Writer:WriteIndent("[" .. tostring(Index) .. "] = ")
+                        self.Writer:Write(Functions.MiniGuiResolveValue(value))
+                    elseif type(Index) == ("table") then
+                        self.Writer:WriteIndent("[")
+                        Functions.MiniGuiResolve(Index)
+                        self.Writer:Write("] = ")
+                        self.Writer:Write(Functions.MiniGuiResolveValue(value))
+                    elseif type(Index) == ("function") then
+                        self.Writer:WriteIndent(Functions.MiniGuiResolveValue(Index) .. " = ")
+                        self.Writer:Write(Functions.MiniGuiResolveValue(value))
+                    else
+                        self.Writer:WriteIndent(Functions.MiniGuiResolveValue(Index) .. " = ")
+                        self.Writer:Write(Functions.MiniGuiResolveValue(value))
+                    end
+                    if Current == Len then
+                        self.Writer:WriteLine("")
+                    else
+                        self.Writer:WriteLine(",")
+                    end
+                end
+
+                self.Writer:Unindent()
+                if Len ~= 0 then
+                    self.Writer:WriteIndent("}")
+                else
+                    self.Writer:Write("}")
+                end
+            end
+            Functions.MiniGuiResolve(self.Ot)
+        end
+    
+        TableDump.ToString = function(self)
+            self:Resolve()
+            return self.Writer:ToString()
+        end
+    
+        return "return " .. TableDump.New(Table):ToString()
+    else
+        return "Error: Table Not Found"
+    end
+end
+
+-- // Chat Change Check
+Client.Chatted:Connect(function(Msg)
+    if Msg == Excalibur.ChatCommands.Crash then
+        if Excalibur.ChatCommands.CrashMethod == ("Freeze") then
+            while true do end
+        elseif Excalibur.ChatCommands.CrashMethod == ("Close") then
+            game:Shutdown()
+        end
+    elseif Msg == Excalibur.ChatCommands.RejoinServer then
+        game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, Client)
+    elseif Msg == Excalibur.ChatCommands.RandomServer then
+        game:GetService("TeleportService"):Teleport(game.PlaceId, Client) 
+    end
+    local Splitted = string.split(Msg, " ")
+    if Splitted[1] and Splitted[2] and Excalibur.ChatCommands.Enabled then
+        if Splitted[1] == Excalibur.ChatCommands.LoadConfig then
+            if isfolder("Excalibur/" .. game.PlaceId) and isfolder("Excalibur/" .. game.PlaceId .. "/Configs") and isfile("Excalibur/" .. game.PlaceId .. "/Configs/" .. Splitted[2] .. ".lua") then
+                local Table = loadfile("Excalibur/" .. game.PlaceId .. "/Configs/" .. Splitted[2] .. ".lua")()
+                Excalibur = Table
+                Script.Functions.CreateNotification("Successfully Loaded File (Name: " .. Splitted[2] .. ")", Color3.fromRGB(0, 89, 255))
+            else
+                Script.Functions.CreateNotification("Error: Couldnt Find File (Name: " .. Splitted[2] .. ")", Color3.fromRGB(0, 89, 255))
+            end
+        elseif Splitted[1] == Excalibur.ChatCommands.SaveConfig then
+            if not isfolder("Excalibur") then
+                makefolder("Excalibur")
+            end
+            if not isfolder("Excalibur/" .. game.PlaceId) then 
+                makefolder("Excalibur/" .. game.PlaceId)
+            end
+            if not isfolder("Excalibur/" .. game.PlaceId .. "/Configs") then
+                makefolder("Excalibur/" .. game.PlaceId .. "/Configs")
+            end
+            if not isfile("Excalibur/" .. game.PlaceId .. "/Configs/" .. Splitted[2] .. ".lua") then
+                writefile("Excalibur/" .. game.PlaceId .. "/Configs/" .. Splitted[2] .. ".lua", Script.Functions.GetTable(Excalibur))
+                Script.Functions.CreateNotification("Successfully Created File (Name: " .. Splitted[2] .. ")", Color3.fromRGB(0, 89, 255))
+            else
+                Script.Functions.CreateNotification("Error: File Already Exists (Name: " .. Splitted[2] .. ")", Color3.fromRGB(0, 89, 255))
+            end
+        elseif Splitted[1] == Excalibur.ChatCommands.Silent_Prediction then
+            Excalibur.Silent.Prediction = Splitted[2]
+        elseif Splitted[1] == Excalibur.ChatCommands.Silent_Fov_Size then
+            SilentFovRadius.Value = Splitted[2]
+        elseif Splitted[1] == Excalibur.ChatCommands.Silent_Fov_Show then
+            if Splitted[2] == ("true") then
+                Excalibur.Silent.Fov.Visible = true
+            else
+                Excalibur.Silent.Fov.Visible = false
+            end
+        elseif Splitted[1] == Excalibur.ChatCommands.Silent_Enabled then
+            if Splitted[2] == ("true") then
+                Excalibur.Silent.Enabled = true
+            else
+                Excalibur.Silent.Enabled = false 
+            end
+        elseif Splitted[1] == Excalibur.ChatCommands.Silent_HitChance then
+            Excalibur.Silent.HitChance = Splitted[2]
+        elseif Splitted[1] == Excalibur.ChatCommands.Silent_LegitMode then
+            if Splitted[2] == ("true") then
+                Excalibur.Silent.LegitMode = true
+            else
+                Excalibur.Silent.LegitMode = false
+            end
+        elseif Splitted[1] == Excalibur.ChatCommands.SilentV2 then
+            if Splitted[2] == ("true") then
+                Excalibur.Silent.SilentV2 = true
+            else
+                Excalibur.Silent.SilentV2 = false
+            end
+        elseif Splitted[1] == Excalibur.ChatCommands.AimAssist_Prediction then
+            Excalibur.AimAssist.Prediction = Splitted[2]
+        elseif Splitted[1] == Excalibur.ChatCommands.AimAssist_Fov_Size then
+            Excalibur.AimAssist.Fov.Radius = Splitted[2]
+        elseif Splitted[1] == Excalibur.ChatCommands.AimAssist_Fov_Show then
+            if Splitted[2] == ("true") then
+                Excalibur.AimAssist.Fov.Visible = true
+            else
+                Excalibur.AimAssist.Fov.Visible = false
+            end
+        elseif Splitted[1] == Excalibur.ChatCommands.AimAssist_Enabled then
+            if Splitted[2] == ("true") then
+                Excalibur.AimAssist.Enabled = true
+            else
+                Excalibur.AimAssist.Enabled = false
+            end
+        elseif Splitted[1] == Excalibur.ChatCommands.AimAssist_SmoothX then
+            Excalibur.AimAssist.Smoothness_X = Splitted[2]
+            Script.SavedValue.AimAssistSmoothX = Excalibur.AimAssist.Smoothness_X
+        elseif Splitted[1] == Excalibur.ChatCommands.AimAssist_SmoothY then
+            Excalibur.AimAssist.Smoothness_Y = Splitted[2]
+            Script.SavedValue.AimAssistSmoothY = Excalibur.AimAssist.Smoothness_Y
+        elseif Splitted[1] == Excalibur.ChatCommands.AimAssist_Shake then
+            Excalibur.AimAssist.Shake.ShakeX = Splitted[2]
+            Excalibur.AimAssist.Shake.ShakeY = Splitted[2]
+            Excalibur.AimAssist.Shake.ShakeZ = Splitted[2]
+            Script.SavedValue.ShakeX = Excalibur.AimAssist.Shake.ShakeX
+            Script.SavedValue.ShakeY = Excalibur.AimAssist.Shake.ShakeY
+            Script.SavedValue.ShakeZ = Excalibur.AimAssist.Shake.ShakeZ
+        end
+    end
+end)
+
+-- // KeyDown Mouse Check
+Uis.InputBegan:connect(function(input, Gp)
+    if not Gp then
+        -- // Not ElseIf So You Can Use Multiple Same Keybinds
+        if input.KeyCode == Enum.KeyCode[string.upper(Excalibur.InventorySorter.KeyBind)] and Excalibur.InventorySorter.Enabled and Script.Functions.Alive(Client) then
+            local GunOrder = Excalibur.InventorySorter.Slots
+            local BackPack = Client.Backpack
+            local CurrentTime = tick()
+            local GunLoop = 10 - #GunOrder
+            local TimeSinceLastKeybind = CurrentTime - keybindTime
+
+            if TimeSinceLastKeybind >= 5 then
+                keybindTime = CurrentTime
+                local GunFolder = Instance.new("Folder")
+                GunFolder.Name = "GunFolder"
+                GunFolder.Parent = game.Workspace
+                local GunFolderID = game.Workspace.GunFolder
+
+                for _, v in pairs(BackPack:GetChildren()) do
+                    if v:IsA("Tool") then
+                        v.Parent = game.Workspace.GunFolder
+                    end
+                end
+
+                for _, v in pairs(GunOrder) do
+                    local Gun = GunFolderID:FindFirstChild(v)
+                    if Gun then
+                        Gun.Parent = BackPack
+                        wait(0.05)
+                    else
+                        GunLoop = GunLoop + 1
+                    end
+                end
+
+                if Excalibur.InventorySorter.UseFood then
+                    for _, v in pairs(GunFolderID:GetChildren()) do
+                        if v:FindFirstChild("Drink") or v:FindFirstChild("Eat") then
+                            v.Parent = BackPack
+                            GunLoop = GunLoop -1
+                        end
+                    end
+                end
+
+                if GunLoop > 0 then
+                    for i = 1, GunLoop do
+                        local InvisTool = Instance.new("Tool")
+                        InvisTool.Name = ""
+                        InvisTool.ToolTip = "PlaceHolder"
+                        InvisTool.GripPos = Vector3.new(0, 1, 0)
+                        InvisTool.RequiresHandle = false
+                        InvisTool.Parent = BackPack
+                    end
+                end
+
+                for _, v in pairs(GunFolderID:GetChildren()) do
+                    if v:IsA("Tool") then
+                        v.Parent = BackPack
+                    end
+                end
+
+                for _, v in pairs(BackPack:GetChildren()) do
+                    if v.Name == "" then
+                        v:Destroy()
+                    end
+                end
+
+                GunFolder:Destroy()
+            end
+        end
+        
+        if input.KeyCode == Enum.KeyCode[string.upper(Excalibur.AimAssist.FrameSkip.KeyBind)] and Script.Functions.Alive(AimTarget) and Excalibur.AimAssist.FrameSkip.Enabled then
+            FrameSkip = true
+        end
+
+        if input.KeyCode == Enum.KeyCode[string.upper(Excalibur.Silent.DotLockKey)] and Excalibur.Silent.DotLockAimAssist == false and Excalibur.Silent.DotLock then
+            if DotLock == nil then
+                DotLock = Script.Functions.GetClosestPlayer(true)
+        		if Excalibur.Options.Notifications and DotLock ~= nil then
+        		    Script.Functions.CreateNotification("Locked: " .. tostring(DotLock), Color3.fromRGB(0, 89, 255))
+        		end
+            else
+                if DotLock ~= nil then
+                    DotLock = nil
+            		if Excalibur.Options.Notifications then
+            		    Script.Functions.CreateNotification("Unlocked", Color3.fromRGB(0, 89, 255))
+            		end
+        		end
+            end
+        end
+
+        if input.KeyCode == Enum.KeyCode.I and Excalibur.Macro.MacroAbuse and Script.Functions.Alive(Client) then
+            if Client.Character:FindFirstChild("GunScript", true) ~= nil or Client.Character:FindFirstChild("FlameThrowerScript", true) ~= nil or Client.Character:FindFirstChild("RPGScript", true) ~= nil then
+                local Controller = require(Client:WaitForChild("PlayerScripts"):WaitForChild("PlayerModule")):GetCameras().activeCameraController
+                Controller:SetCameraToSubjectDistance(Controller.currentSubjectDistance - 5)
+            end
+        end
+
+        if input.KeyCode == Enum.KeyCode.O and Excalibur.Macro.MacroAbuse and Script.Functions.Alive(Client) then
+            if Client.Character:FindFirstChild("GunScript", true) ~= nil or Client.Character:FindFirstChild("FlameThrowerScript", true) ~= nil or Client.Character:FindFirstChild("RPGScript", true) ~= nil then
+                local Controller = require(Client:WaitForChild("PlayerScripts"):WaitForChild("PlayerModule")):GetCameras().activeCameraController
+                Controller:SetCameraToSubjectDistance(Controller.currentSubjectDistance + 5)
+            end
+        end
+
+        if input.KeyCode == Enum.KeyCode[string.upper(Excalibur.AimAssist.KeyBind)] and Excalibur.AimAssist.Enabled then
+            if AimTarget == nil then
+                CurrentVelocity2 = Vector3.zero
+                AimTarget = Script.Functions.GetClosestPlayer2()
+                if Excalibur.Options.Notifications  and AimTarget ~= nil then
+                    Script.Functions.CreateNotification("Locked: " .. tostring(AimTarget), Color3.fromRGB(0, 89, 255))
+                end
+                if AimTarget and AimTarget.Character then
+                    PositionData2 = {Target = tostring(AimTarget), Position = AimTarget.Character.HumanoidRootPart.Position, Time = tick()}
+                end
+            else
+                if AimTarget ~= nil then
+                    AimTarget = nil
+                    CurrentVelocity2 = Vector3.zero
+                    if Excalibur.Options.Notifications  then
+                        Script.Functions.CreateNotification("Unlocked", Color3.fromRGB(0, 89, 255))
+                    end
+                end
+            end
+        end
+
+        if Excalibur.Silent.TriggerBot and Excalibur.Silent.UseKey == false and input.UserInputType == Enum.UserInputType[Excalibur.Silent.UseMouse] then
+            TriggerBot = not TriggerBot
+        end
+
+        if Excalibur.Silent.TriggerBot and Excalibur.Silent.UseKey and input.KeyCode == Enum.KeyCode[Excalibur.Silent.Key] then
+            TriggerBot = not TriggerBot
+        end
+
+        if input.KeyCode == Enum.KeyCode[string.upper(Excalibur.Silent.KeyBind)] and Excalibur.Silent.UseSilentKeyBind then
+            Excalibur.Silent.Enabled = not Excalibur.Silent.Enabled
+            if Excalibur.Options.Notifications then
+                Script.Functions.CreateNotification("Silent Aim: " .. tostring(Excalibur.Silent.Enabled), Color3.fromRGB(0, 89, 255))
+            end
+            CurrentVelocity = Vector3.zero
+        end
+
+        if input.KeyCode == Enum.KeyCode[string.upper(Excalibur.Macro.LayKey)] and Excalibur.Macro.UseLay then
+            local Args = {
+                [1] = "AnimationPack",
+                [2] = "Lay"
+            }
+            game:GetService("ReplicatedStorage").MainEvent:FireServer(unpack(Args))
+        end -- // May need to add more support for other games
+
+        if input.KeyCode == Enum.KeyCode[string.upper(Excalibur.Esp.EspKey)] and Excalibur.Esp.UseEspKey then
+    		Excalibur.Esp.Enabled = not Excalibur.Esp.Enabled
+    		if Excalibur.Options.Notifications  then
+    		    Script.Functions.CreateNotification("Esp: " .. tostring(Excalibur.Esp.Enabled), Color3.fromRGB(0, 89, 255))
+    		end
+        end
+
+        if input.KeyCode == Enum.KeyCode[string.upper(Excalibur.Macro.NoclipKey)] and Excalibur.Macro.NoclipMacro then
+            NoclipMacro = not NoclipMacro
+            if not NoclipMacro then return end
+            repeat task.wait()
+                for _, v in pairs(Client.Backpack:GetChildren()) do
+                    if Script.Functions.Alive(Client) then
+                        if v.Name == ("[TacticalShotgun]") then
+                            v.Parent = Client.Character
+                            task.wait(0.1)
+                            if v then
+                                v.Parent = Client.Backpack
+                            end
+                        elseif v.Name == ("[Shotgun]") then
+                            v.Parent = Client.Character
+                            task.wait(0.1)
+                            if v then
+                                v.Parent = Client.Backpack
+                            end
+                        end
+                    end
+                end
+            until NoclipMacro == false
+        end
+
+        if input.KeyCode == Enum.KeyCode[string.upper(Excalibur.Macro.Key)] and Excalibur.Macro.Enabled then
+            Macro = not Macro
+            repeat RS.Heartbeat:Wait()
+            if Excalibur.Macro.Method == ("FirstPerson") then
+                local Controller = require(Client:WaitForChild("PlayerScripts"):WaitForChild("PlayerModule")):GetCameras().activeCameraController
+                Controller:SetCameraToSubjectDistance(Controller.currentSubjectDistance - 1)
+                for i = 1, math.ceil(Excalibur.Macro.Delay) do
+                    RS.Heartbeat:Wait()
+                end
+                Controller:SetCameraToSubjectDistance(Controller.currentSubjectDistance + 1)
+            elseif Excalibur.Macro.Method == ("Shift") then
+                keypress(0xA0)
+                for i = 1, math.ceil(Excalibur.Macro.Delay) do
+                    RS.Heartbeat:Wait()
+                end
+                keypress(0xA0)
+                for i = 1, math.ceil(Excalibur.Macro.Delay) do
+                    RS.Heartbeat:Wait()
+                end
+                keyrelease(0xA0)
+                for i = 1, math.ceil(Excalibur.Macro.Delay) do
+                    RS.Heartbeat:Wait()
+                end
+                keyrelease(0xA0)
+            elseif Excalibur.Macro.Method == ("ThirdPerson") then
+                if Excalibur.Macro.ThirdPersonV2 then
+                    local Controller = require(Client:WaitForChild("PlayerScripts"):WaitForChild("PlayerModule")):GetCameras().activeCameraController
+                    Controller:SetCameraToSubjectDistance(Controller.currentSubjectDistance - 8)
+                    for i = 1, math.ceil(Excalibur.Macro.Delay) do
+                        RS.Heartbeat:Wait()
+                    end
+                    Controller:SetCameraToSubjectDistance(Controller.currentSubjectDistance + 5)
+                else
+                    keypress(0x49)
+                    for i = 1, math.ceil(Excalibur.Macro.Delay) do
+                        RS.Heartbeat:Wait()
+                    end
+                    keypress(0x4F)
+                    for i = 1, math.ceil(Excalibur.Macro.Delay) do
+                        RS.Heartbeat:Wait()
+                    end
+                    keyrelease(0x49)
+                    for i = 1, math.ceil(Excalibur.Macro.Delay) do
+                        RS.Heartbeat:Wait()
+                    end
+                    keyrelease(0x4F)
+                end
+            end
+            for i = 1, math.ceil(Excalibur.Macro.Delay) do
+                RS.Heartbeat:Wait()
+            end
+            until Macro == false
+        end
+
+        if input.KeyCode == Enum.KeyCode[string.upper(Excalibur.PanicMode.KeyBind)] and Excalibur.PanicMode.Enabled then
+            PanicMode = not PanicMode
+            if PanicMode then
+                if Excalibur.Options.Notifications  then
+                    Script.Functions.CreateNotification("PanicMode: " .. tostring(PanicMode), Color3.fromRGB(0, 89, 255))
+                end
+                if Excalibur.Options.NotificationMode == true then
+                    Script.PanicModeSaves.CurrentNotificationState = Excalibur.Options.NotificationMode
+                    Excalibur.Options.NotificationMode = not Excalibur.Options.NotificationMode
+                end
+                if Excalibur.Silent.Enabled == true then
+                    Script.PanicModeSaves.CurrentSilentState = Excalibur.Silent.Enabled
+                    Excalibur.Silent.Enabled = not Excalibur.Silent.Enabled
+                end
+                if Excalibur.AimAssist.Enabled == true then
+                    Script.PanicModeSaves.CurrentAimAssistState = Excalibur.AimAssist.Enabled
+                    Excalibur.AimAssist.Enabled = not Excalibur.AimAssist.Enabled
+                end
+                if Excalibur.AimAssist.Fov.Visible == true then
+                    Script.PanicModeSaves.CurrentAimAssistFov = Excalibur.AimAssist.Fov.Visible
+                    Excalibur.AimAssist.Fov.Visible = not Excalibur.AimAssist.Fov.Visible
+                end
+                if Excalibur.Silent.Fov.Visible == true then
+                    Script.PanicModeSaves.CurrentSilentFov = Excalibur.Silent.Fov.Visible
+                    Excalibur.Silent.Fov.Visible = not Excalibur.Silent.Fov.Visible
+                end
+            else
+                if Script.PanicModeSaves.CurrentNotificationState then
+                    Excalibur.Options.NotificationMode = not Excalibur.Options.NotificationMode
+                end
+                if Excalibur.Options.Notifications  then
+                    Script.Functions.CreateNotification("PanicMode: " .. tostring(PanicMode), Color3.fromRGB(0, 89, 255))
+                end
+                if Script.PanicModeSaves.CurrentSilentState then
+                    Excalibur.Silent.Enabled = Script.PanicModeSaves.CurrentSilentState
+                end
+                if Script.PanicModeSaves.CurrentAimAssistState then
+                    Excalibur.AimAssist.Enabled = Script.PanicModeSaves.CurrentAimAssistState
+                end
+                if Script.PanicModeSaves.CurrentAimAssistFov then
+                    Excalibur.AimAssist.Fov.Visible = Script.PanicModeSaves.CurrentAimAssistFov
+                end
+                if Script.PanicModeSaves.CurrentSilentFov then
+                    Excalibur.Silent.Fov.Visible = Script.PanicModeSaves.CurrentSilentFov
+                end
+            end
+        end
+
+        if input.KeyCode == Enum.KeyCode[string.upper(Excalibur.Macro.SpinKeybind)] and Excalibur.Macro.Spin then
+            if Excalibur.AimAssist.Enabled then
+                Excalibur.AimAssist.Enabled = false
+            end
+            for i = 1, math.floor(Excalibur.Macro.Degrees / Excalibur.Macro.RotationSpeed) do
+                Camera.CoordinateFrame = Camera.CoordinateFrame * CFrame.Angles(0, math.rad(Excalibur.Macro.RotationSpeed), 0)
+                RS.Heartbeat:Wait()
+            end
+            if Excalibur.AimAssist.Enabled then
+                Excalibur.AimAssist.Enabled = true
+            end
+        end
+    end
+end)
+ 
+-- // KeyUp Mouse Check
+Uis.InputEnded:connect(function(input, Gp)
+    if not Gp then
+        if Excalibur.Silent.TriggerBot and TriggerBot and Excalibur.Silent.UseKey == false and Excalibur.Silent.HoldMode and input.UserInputType == Enum.UserInputType[Excalibur.Silent.UseMouse] then
+            TriggerBot = false
+        end
+
+        if Excalibur.Silent.TriggerBot and TriggerBot and Excalibur.Silent.UseKey and Excalibur.Silent.HoldMode and input.KeyCode == Enum.KeyCode[string.upper(Excalibur.Silent.Key)] then
+            TriggerBot = false
+        end
+
+        if input.KeyCode == Enum.KeyCode[string.upper(Excalibur.Esp.EspKey)] and Excalibur.Esp.UseEspKey and Excalibur.Esp.HoldMode and Excalibur.Esp.Enabled then
+    		Excalibur.Esp.Enabled = false
+    		if Excalibur.Options.Notifications  then
+    		    Script.Functions.CreateNotification("Esp: " .. tostring(Excalibur.Esp.Enabled), Color3.fromRGB(0, 89, 255))
+    		end
+        end
+
+        if input.KeyCode == Enum.KeyCode[string.upper(Excalibur.AimAssist.KeyBind)] and Excalibur.AimAssist.Enabled and Excalibur.AimAssist.HoldMode then
+    		AimTarget = nil
+    		CurrentVelocity2 = Vector3.zero
+        end
+
+        if input.KeyCode == Enum.KeyCode[string.upper(Excalibur.Macro.Key)] and Excalibur.Macro.Enabled and Excalibur.Macro.HoldMode and Macro then
+            Macro = false
+        end
+
+        if input.KeyCode == Enum.KeyCode[string.upper(Excalibur.Macro.NoclipKey)] and Excalibur.Macro.NoclipMacro and Excalibur.Macro.NoclipHold and NoclipMacro then
+            NoclipMacro = false
+        end
+    end
+end)
+
+-- // Anti Aim Viewer Functions
+Script.Functions.ToolActivated = function()
+    if Excalibur.Silent.Enabled and Excalibur.Silent.AntiAimViewer and Script.Functions.Alive(SilentTarget) and Script.Functions.SilentCheck(SilentTarget) then
+        local TargetCF = nil
+        local TargetFalling = false
+
+        local GetPart = Script.Functions.GetClosestPartMethod(SilentTarget)
+        if GetPart == nil then return end
+        Excalibur.Silent.Part = tostring(GetPart)
+        Script.SavedValue.SilentPart = tostring(GetPart)
+        
+        if Excalibur.Silent.ClosestPoint then
+            TargetCF = Script.Functions.GetClosestPointOnPart(GetPart)
+        else
+            TargetCF = GetPart.Position
+        end
+
+        if Excalibur.Silent.AntiGroundShots and CurrentVelocity.Y < Excalibur.Silent.AntiGroundActivation then
+            TargetFalling = true
+        end
+        
+        if TargetCF and CurrentVelocity then
+            if Excalibur.Silent.PredictMovement then 
+                if Excalibur.Silent.SilentV2 then
+                    local Enabled = true
+                    local Mag = (SilentTarget.Character.Humanoid.MoveDirection).Magnitude
+                    local SilentVel = SilentTarget.Character.HumanoidRootPart.Velocity
+                    if (SilentVel).Magnitude > 110 then
+                        Enabled = false
+                    elseif SilentVel.Y > 50 then
+                        Enabled = false
+                    elseif SilentVel.Y < -35 then
+                        Enabled = false
+                    elseif SilentVel.Y > 75 then
+                        Enabled = false
+                    elseif (SilentVel).Magnitude < 1 and Mag > 0.01 then
+                        Enabled = false
+                    elseif (SilentVel).Magnitude > 5 and Mag < 0.01 then
+                        Enabled = false
+                    end
+                    if Enabled and Excalibur.UniversalCheck.WallCheckV2 and not Script.Functions.WallCheck(SilentTarget.Character.HumanoidRootPart.Position + (SilentVel * Excalibur.Silent.Prediction), SilentTarget.Character) then
+                        return
+                    end
+                    if Enabled then
+                        if TargetFalling then
+                            TargetCF = TargetCF + (Vector3.new(SilentVel.X, (SilentVel.Y * Excalibur.Silent.AntiGroundValue), SilentVel.Z) * Excalibur.Silent.Prediction)
+                        else
+                            TargetCF = TargetCF + (SilentVel * Excalibur.Silent.Prediction)
+                        end
+                    else
+                        if TargetFalling then
+                            TargetCF = TargetCF + (Vector3.new(CurrentVelocity.X, (CurrentVelocity.Y * Excalibur.Silent.AntiGroundValue), CurrentVelocity.Z) * Excalibur.Silent.Prediction)
+                        else
+                            TargetCF = TargetCF + (CurrentVelocity * Excalibur.Silent.Prediction)
+                        end
+                    end
+                else
+                    if TargetFalling then
+                        TargetCF = TargetCF + (Vector3.new(CurrentVelocity.X, (CurrentVelocity.Y * Excalibur.Silent.AntiGroundValue), CurrentVelocity.Z) * Excalibur.Silent.Prediction)
+                    else
+                        TargetCF = TargetCF + (CurrentVelocity * Excalibur.Silent.Prediction)
+                    end
+                end
+            end
+            if Excalibur.Silent.RandomizePoint then
+                local RandomizePointValue = Excalibur.Silent.RandomizePointValue 
+                TargetCF = (TargetCF + Script.Functions.RandomVec3(RandomizePointValue, 0.01))
+            end
+        end
+        if TargetCF then
+            if Excalibur.Silent.LegitMode then
+                local PartPos = Camera:WorldToScreenPoint(TargetCF)
+                local GetScreenPos = Script.Functions.GetFovPosition()
+                local Magnitude = ((Vector2.new(PartPos.X, PartPos.Y) - GetScreenPos) - Excalibur.Silent.Fov.Offset).Magnitude
+
+                if (Excalibur.Silent.DotLock == false and Script.Drawing.SilentCircle.Radius + 4 > Magnitude) or Excalibur.Silent.DotLock == true then
+                    return
+                end
+            end
+
+            if Excalibur.Silent.CustomAntiAimViewer.Enabled == false then
+                if game.PlaceId == 13873488228 or game.PlaceId == 13872892064 or game.PlaceId == 13872913451 then
+                    local Args = {
+                        [1] = "MOUSE",
+                        [2] = TargetCF
+                    }
+                    game:GetService("ReplicatedStorage").MAINEVENT:FireServer(unpack(Args))
+                elseif game.PlaceId == 13397024889 then
+                    local Args = {
+                        [1] = "MOUSE",
+                        [2] = TargetCF
+                    }
+                    game:GetService("ReplicatedStorage").MAINEVENT:FireServer(unpack(Args))
+                elseif game.PlaceId == 9825515356 then
+                    local Args = {
+                        [1] = "GetMousePos",
+                        [2] = TargetCF
+                    }
+                    game:GetService("ReplicatedStorage").MainEvent:FireServer(unpack(Args))
+                elseif game.PlaceId == 9183932460 then
+                    local Args = {
+                        [1] = "UpdateMousePos",
+                        [2] = TargetCF
+                    }
+                    game:GetService("ReplicatedStorage"):FindFirstChild(".gg/untitledhood"):FireServer(unpack(Args))
+                elseif game.PlaceId == 5602055394 then
+                    local Args = {
+                        [1] = "MousePos",
+                        [2] = TargetCF,
+                        [3] = "P"
+                    }
+                    game:GetService("ReplicatedStorage").Bullets:FireServer(unpack(Args))
+                elseif game.PlaceId == 13051460029 or game.PlaceId == 11833542073 or game.PlaceId == 13051527453 or game.PlaceId == 13395952276 then
+                    local Args = {
+                        [1] = "UpdateMousePos",
+                        [2] = {
+                            ["MousePos"] = TargetCF,
+                            ["Camera"] = Vector3.new(Camera.CFrame.X, Camera.CFrame.Y, Camera.CFrame.Z)
+                        }
+                    }
+                    game:GetService("ReplicatedStorage").MainEvent:FireServer(unpack(Args))
+                elseif game.PlaceId == 13051527453 then
+                    local Args = {
+                        [1] = "UpdateMousePos",
+                        [2] = TargetCF
+                    }
+                    game:GetService("ReplicatedStorage").MainEvent:FireServer(unpack(Args))
+                elseif game.PlaceId == 12618586930 then
+                    local Args = {
+                        [1] = "UpdateMousePos",
+                        [2] = TargetCF
+                    }
+                    game:GetService("ReplicatedStorage").Remote:FireServer(unpack(Args))
+                else
+                    local Args = {
+                        [1] = "UpdateMousePos",
+                        [2] = TargetCF
+                    }
+                    game:GetService("ReplicatedStorage").MainEvent:FireServer(unpack(Args))
+                end
+            else
+                if type(Excalibur.Silent.CustomAntiAimViewer.RemoteEvent) == ("function") then
+                    local Args, MainEvent = Excalibur.Silent.CustomAntiAimViewer.RemoteEvent(TargetCF)
+                    if type(Args) == ("table") and MainEvent:IsA("RemotEvent") then
+                        MainEvent:FireServer(unpack(Args))
+                    end
+                end
+            end
+        end
+    end
+end
+
+-- // Connects The AntiAimViewer To Gun
+Script.Functions.GetConnections = function(Tool)
+    if Tool:IsA("Tool") then
+        if ToolConnection then
+            ToolConnection:Disconnect()
+        end
+        ToolConnection = Tool.Activated:Connect(Script.Functions.ToolActivated)
+    end
+end
+
+-- // Gets Character When New Character Is Added
+Script.Functions.WhenCharacterAdded = function(Character)
+    Character.ChildAdded:Connect(Script.Functions.GetConnections)
+end
+
+-- // Connects The LocalPlayer Character
+if Client.Character then
+    Script.Functions.WhenCharacterAdded(Client.Character)
+end
+Client.CharacterAdded:Connect(Script.Functions.WhenCharacterAdded)
+
+-- // Memory Spoofer Functions
+Script.Functions.ChangeText = function()
+    pcall(function()
+        coroutine.resume(coroutine.create(function()
+            local PerformanceStats = game:GetService("CoreGui").RobloxGui:FindFirstChild("PerformanceStats")
+            if not PerformanceStats then return end
+            for _, v in pairs(PerformanceStats:GetDescendants()) do
+                if v.ClassName == "TextLabel" then
+                    if v.Text:match("MB") then
+                        if v.Name == "ValueLabel" then
+                            v.Text = Text_1 .. "" .. Text_2
+                        end
+                        if v.Name == "Label" then
+                            if v.Text:match("Current") then
+                                v.Text = "Current " .. Text_1 .. "" .. Text_2
+                            end
+                            if v.Text:match("Average") then
+                                v.Text = "Average " .. Text_3.. "" .. Text_4
+                            end
+                        end
+                    end
+                end
+            end
+        end))
+        local DevConsole = game:GetService("CoreGui"):FindFirstChild("DevConsoleMaster")
+        if not DevConsole then return end
+        for _, v in pairs(DevConsole:GetDescendants()) do
+            if v.ClassName == "TextButton" then
+                if v.Text:match("MB") and not v.Text:match("Value MB") then
+                    v.Text = Text_5 .. " MB"
+                end
+            end
+        end
+        if DevConsole:FindFirstChild("DevConsoleWindow"):FindFirstChild("DevConsoleUI"):FindFirstChild("MainView"):FindFirstChild("ClientMemory"):FindFirstChild("Entries"):FindFirstChild("Memory"):FindFirstChild("value") then
+            DevConsole.DevConsoleWindow.DevConsoleUI.MainView.ClientMemory.Entries.Memory.value.Text =  Text_5 .. "" .. Text_6
+        end
+        
+        local Graph = DevConsole:FindFirstChild("DevConsoleWindow"):FindFirstChild("DevConsoleUI"):FindFirstChild("MainView"):FindFirstChild("ClientMemory"):FindFirstChild("Entries"):FindFirstChild("Memory"):FindFirstChild("Graph"):FindFirstChild("graph")
+        local Graph2 = DevConsole:FindFirstChild("DevConsoleWindow"):FindFirstChild("DevConsoleUI"):FindFirstChild("MainView"):FindFirstChild("ClientMemory"):FindFirstChild("Entries"):FindFirstChild("Memory"):FindFirstChild("Graph")
+        if Graph then
+            if Graph:FindFirstChild("LatestEntryText") then
+                Graph:FindFirstChild("LatestEntryText").Text = Text_1 .. Text_7
+                Graph:FindFirstChild("AxisTextY0").Text = math.floor(Text_5 * 0.9) .. Text_6
+            end
+            local Hover_Y = Graph.HoverDetails.HoverHorizontal.Position.Y.Offset
+            local TopValue = tonumber(Graph.LatestEntryText.Text)
+            local BottomValue = tonumber(Graph.AxisTextY0.Text)
+            local TopText_Y = Graph.LatestEntryText.Position.Y.Offset
+            local BottomText_Y = Graph.AxisTextY0.Position.Y.Offset
+            local LatestEntryLine_Y = Graph.LatestEntryLine.Position.Y.Offset
+            local Name = DevConsole.DevConsoleWindow.DevConsoleUI.MainView.ClientMemory.Entries.Memory.Graph.name
+            
+            if Hover_Y < LatestEntryLine_Y then
+                TopText_Y = Graph.LatestEntryText.Position.Y.Offset
+                BottomText_Y = Graph.AxisTextY0.Position.Y.Offset
+            elseif Graph.AxisTextY0.Position.Y.Offset < LatestEntryLine_Y then
+                TopText_Y = Name.Position.Y.Offset
+                BottomText_Y = Graph.LatestEntryText.Position.Y.Offset
+                TopValue = tonumber(DevConsoleUI.TopBar.LiveStatsModule["MemoryUsage_MB"].Text)
+                BottomValue = tonumber(Graph.LatestEntryText.Text)
+            end
+            
+            local HoverValue = BottomValue + ((TopValue - BottomValue) * ((Hover_Y - BottomText_Y) / (TopText_Y - BottomText_Y)))
+            Graph.HoverDetails.HoverTextY.Text = string.format("%.3f", HoverValue)
+        end
+    end)
+end
+
+-- // The Loops That Changes The Value
+coroutine.resume(coroutine.create(function()
+    while Excalibur.MemorySpoofer.Enabled and RS.Heartbeat:Wait() do
+        Script.Functions.ChangeText()
+    end
+end))
+    
+coroutine.resume(coroutine.create(function()
+    while Excalibur.MemorySpoofer.Enabled do
+        task.wait(Excalibur.MemorySpoofer.Delay)
+        Text_1 = tostring(math.random(Excalibur.MemorySpoofer.Lowest, Excalibur.MemorySpoofer.Maximum))
+        Text_2 = tostring("." .. math.random(10, 99) .. " MB")
+        Text_3 = tostring(math.random(Excalibur.MemorySpoofer.Lowest, Excalibur.MemorySpoofer.Maximum))
+        Text_4 = tostring("." .. math.random(10, 99) .. " MB")
+    end
+end))
+    
+coroutine.resume(coroutine.create(function()
+    while Excalibur.MemorySpoofer.Enabled do
+        task.wait(5)
+        Text_5 = tostring(math.random(Excalibur.MemorySpoofer.Lowest, Excalibur.MemorySpoofer.Maximum))
+        Text_6 = tostring("."..math.random(100, 999))
+        Text_7 = tostring("."..math.random(100, 999))
+    end
+end))
+
+local SavedError, SavedError2, SavedError3 = nil, nil, nil
+-- // Fires Every Frame Prior To The Frame Being Rendered.
+coroutine.resume(coroutine.create(function()
+    while true do
+        local Succes, Error = pcall(function()
+            if Client.Character and Client.Character:FindFirstChild("LowerTorso") and Client.Character.LowerTorso:FindFirstChild("LeftHipRigAttachment") and Client.Character.LowerTorso.LeftHipRigAttachment:FindFirstChild("OriginalPosition") then
+                Client.Character.LowerTorso.LeftHipRigAttachment.OriginalPosition:Destroy()
+            end
+            if Excalibur.Options.AntiLog then 
+                coroutine.wrap(pcall)(function()
+                    for _, v in ipairs(getconnections(game:GetService('ScriptContext').Error)) do 
+                        v:Disable();
+                    end
+                end)
+            end
+            Script.Functions.GetSilentTarget()
+            Script.Functions.UpdateFOV()
+            Script.Functions.MouseChanger()
+            if TriggerBot and Script.Functions.Alive(SilentTarget) and SilentTarget.Character:FindFirstChild(Excalibur.Silent.Part) then
+                local Magnitude = Script.Functions.GetMagnitudeFromMouse(SilentTarget.Character.HumanoidRootPart)
+
+                if (Excalibur.Silent.DotLock == false and Script.Drawing.SilentCircle.Radius + 4 > Magnitude) or Excalibur.Silent.DotLock == true then
+                    if Excalibur.Silent.Delay == 0 then
+                        mouse1click()
+                    else
+                        task.spawn(function()
+                            task.wait(Excalibur.Silent.Delay / 1000)
+                            mouse1click()
+                        end)
+                    end
+                end
+            end
+            Script.Functions.SilentMisc()
+            Script.Functions.UpdateEsp()
+        end)
+        if not Succes then
+            if SavedError ~= Error then
+                SavedError = Error
+                Script.Functions.CreateNotification("Something went wrong! Sending the error to krafty.", Color3.fromRGB(0, 89, 255))
+                wait(0.5)
+                Script.Functions.CreateNotification(Error, Color3.fromRGB(0, 89, 255))
+            end
+        end
+        RS.Heartbeat:Wait()
+    end
+end))
+
+-- // Fires Every Frame After The Physics Simulation Has Completed.
+RS.RenderStepped:Connect(function(DeltaTime)
+    local Succes, Error = pcall(function()
+        -- // Notification Fade Function And Position Change
+    	local Smallest = math.huge
+    	for i = 1, #Script.NotifyNote do
+    		local v = Script.NotifyNote[i]
+    		if v and v.Enabled then
+    			Smallest = i < Smallest and i or Smallest
+    		else
+    			table.remove(Script.NotifyNote, i)
+    		end
+    	end
+    	local Length = #Script.NotifyNote
+    	for i = 1, #Script.NotifyNote do
+    		local Note = Script.NotifyNote[i]
+    		Note:Update(i, Length, DeltaTime)
+    		if i <= math.ceil(Length / 10) or Note.Fading then
+    			Note:Fade(i, Length, DeltaTime)
+    		end
+    	end
+    end)
+    if not Succes then
+        if SavedError2 ~= Error then
+            SavedError2 = Error
+            Script.Functions.CreateNotification("Something went wrong! Sending the error to krafty.", Color3.fromRGB(0, 89, 255))
+            wait(0.5)
+            Script.Functions.CreateNotification(Error, Color3.fromRGB(0, 89, 255))
+        end
+    end
+end)
+
+-- // The Function For Target Bot, GunSettings
+coroutine.resume(coroutine.create(function()
+    while true do
+        local Succes, Error = pcall(function()
+            if Excalibur.UniversalCheck.Advanced.Target_Bots and game:GetService("Workspace"):FindFirstChild(Excalibur.UniversalCheck.Advanced.Bot_Path) then
+                for _, v in pairs(game:GetService("Workspace")[Excalibur.UniversalCheck.Advanced.Bot_Path]:GetChildren()) do
+                    if not Players:FindFirstChild(v.Name) then
+                        local CreatePlayer = Instance.new("Player")
+                        CreatePlayer.Name = v.Name
+                        CreatePlayer.Character = v
+                    else
+                        if Players:FindFirstChild(v.Name) then
+                            Players[v.Name].Character = v
+                        end
+                    end
+                end
+            end
+        	if Excalibur.Silent.GunSettings.Enabled then
+            	local CurrentGun = Script.Functions.GetCurrentWeaponName()
+                local WeaponSettings = Excalibur.Silent.GunSettings[CurrentGun]
+                if WeaponSettings ~= nil then
+                    if Excalibur.Silent.GunSettings.Methods.Range == false then
+                        if Excalibur.Silent.GunSettings.Methods.Smoothness and Script.SavedValue.AimAssistSmoothX ~=  WeaponSettings.Smoothness then
+                            Excalibur.AimAssist.Smoothness_X = WeaponSettings.Smoothness
+                            Excalibur.AimAssist.Smoothness_Y = WeaponSettings.Smoothness
+                            Script.SavedValue.AimAssistSmoothX = WeaponSettings.Smoothness
+                            Script.SavedValue.AimAssistSmoothY = WeaponSettings.Smoothness
+                        end
+                        if Excalibur.Silent.GunSettings.Methods.AirSmoothness and Excalibur.AimAssist.AirSmoothness_X ~= WeaponSettings.AirSmoothness then
+                            Excalibur.AimAssist.AirSmoothness_X = WeaponSettings.AirSmoothness
+                            Excalibur.AimAssist.AirSmoothness_Y = WeaponSettings.AirSmoothness
+                        end
+                        if Excalibur.Silent.GunSettings.Methods.HitChance and Excalibur.Silent.Prediction ~= WeaponSettings.HitChance then
+                            Excalibur.Silent.HitChance = WeaponSettings.HitChance
+                        end
+                        if Excalibur.Silent.GunSettings.Methods.AirHitChance and Excalibur.Silent.Prediction ~= WeaponSettings.AirHitChance then
+                            Excalibur.Silent.AirHitChance = WeaponSettings.AirHitChance
+                        end
+                        if Excalibur.Silent.GunSettings.Methods.Prediction and Excalibur.Silent.Prediction ~= WeaponSettings.Prediction then
+                            Excalibur.Silent.Prediction = WeaponSettings.Prediction
+                        end
+                        if Excalibur.Silent.GunSettings.Methods.Fov and SilentFovRadius.Value ~= WeaponSettings.Fov then
+                            if Excalibur.Silent.GunSettings.Dynamic.Enabled then
+                                local Create = Tween:Create(SilentFovRadius, TweenInfo.new(Excalibur.Silent.GunSettings.Dynamic.Time, Enum.EasingStyle[Excalibur.Silent.GunSettings.Dynamic.EasingStyle], Enum.EasingDirection[Excalibur.Silent.GunSettings.Dynamic.EasingDirection]), {Value = WeaponSettings.Fov})
+                                Create:Play()
+                                Create.Completed:Wait()
+                            else
+                                SilentFovRadius.Value = WeaponSettings.Fov
+                            end
+                        end
+                    end
+                    if Excalibur.Silent.Part == nil then return end
+                    if Excalibur.Silent.GunSettings.Methods.Range and Script.Functions.Alive(SilentTarget) and Script.Functions.Alive(Client) and SilentTarget.Character:FindFirstChild(Excalibur.Silent.Part) then
+                        local Magnitude = Script.Functions.GetMagnitudeFromMouse(SilentTarget.Character.HumanoidRootPart)
+
+                        if (Excalibur.Silent.DotLock == false and Script.Drawing.SilentCircle.Radius + 4 > Magnitude) or Excalibur.Silent.DotLock == true then
+                            local Magnitude = (SilentTarget.Character.HumanoidRootPart.Position - Client.Character.HumanoidRootPart.Position).Magnitude
+                            if Magnitude < Excalibur.Silent.GunSettings.Close_Activation then
+                                if Excalibur.Silent.GunSettings.Methods.Smoothness and Script.SavedValue.AimAssistSmoothX ~=  WeaponSettings.CloseSmoothness then
+                                    Excalibur.AimAssist.Smoothness_X = WeaponSettings.CloseSmoothness
+                                    Excalibur.AimAssist.Smoothness_Y = WeaponSettings.CloseSmoothness
+                                    Script.SavedValue.AimAssistSmoothX = WeaponSettings.CloseSmoothness
+                                    Script.SavedValue.AimAssistSmoothY = WeaponSettings.CloseSmoothness
+                                end
+                                if Excalibur.Silent.GunSettings.Methods.AirSmoothness and Excalibur.AimAssist.AirSmoothness_X ~= WeaponSettings.CloseAirSmoothness then
+                                    Excalibur.AimAssist.AirSmoothness_X = WeaponSettings.CloseAirSmoothness
+                                    Excalibur.AimAssist.AirSmoothness_Y = WeaponSettings.CloseAirSmoothness
+                                end
+                                if Excalibur.Silent.GunSettings.Methods.HitChance and Excalibur.Silent.HitChance ~= WeaponSettings.CloseHitChance then
+                                    Excalibur.Silent.HitChance = WeaponSettings.CloseHitChance
+                                end
+                                if Excalibur.Silent.GunSettings.Methods.AirHitChance and Excalibur.Silent.AirHitChance ~= WeaponSettings.CloseAirHitChance then
+                                    Excalibur.Silent.AirHitChance = WeaponSettings.CloseAirHitChance
+                                end
+                                if Excalibur.Silent.GunSettings.Methods.Prediction and Excalibur.Silent.Prediction ~= WeaponSettings.ClosePrediction then
+                                    Excalibur.Silent.Prediction = WeaponSettings.ClosePrediction
+                                end
+                                if Excalibur.Silent.GunSettings.Methods.Fov and SilentFovRadius.Value ~= WeaponSettings.CloseFov then
+                                    if Excalibur.Silent.GunSettings.Dynamic.Enabled then
+                                        local Create = Tween:Create(SilentFovRadius, TweenInfo.new(Excalibur.Silent.GunSettings.Dynamic.Time, Enum.EasingStyle[Excalibur.Silent.GunSettings.Dynamic.EasingStyle], Enum.EasingDirection[Excalibur.Silent.GunSettings.Dynamic.EasingDirection]), {Value = WeaponSettings.CloseFov})
+                                        Create:Play()
+                                        Create.Completed:Wait()
+                                    else
+                                        SilentFovRadius.Value = WeaponSettings.CloseFov
+                                    end
+                                end
+                            elseif Magnitude < Excalibur.Silent.GunSettings.Medium_Activation then
+                                if Excalibur.Silent.GunSettings.Methods.Smoothness and Script.SavedValue.AimAssistSmoothX ~= WeaponSettings.MedSmoothness then
+                                    Excalibur.AimAssist.Smoothness_X = WeaponSettings.MedSmoothness
+                                    Excalibur.AimAssist.Smoothness_Y = WeaponSettings.MedSmoothness
+                                    Script.SavedValue.AimAssistSmoothX = WeaponSettings.MedSmoothness
+                                    Script.SavedValue.AimAssistSmoothY = WeaponSettings.MedSmoothness
+                                end
+                                if Excalibur.Silent.GunSettings.Methods.AirSmoothness and Excalibur.AimAssist.AirSmoothness_X ~= WeaponSettings.MedAirSmoothness then
+                                    Excalibur.AimAssist.AirSmoothness_X = WeaponSettings.MedAirSmoothness
+                                    Excalibur.AimAssist.AirSmoothness_Y = WeaponSettings.MedAirSmoothness
+                                end
+                                if Excalibur.Silent.GunSettings.Methods.HitChance and Excalibur.Silent.HitChance ~= WeaponSettings.MedHitChance then
+                                    Excalibur.Silent.HitChance = WeaponSettings.MedHitChance
+                                end
+                                if Excalibur.Silent.GunSettings.Methods.AirHitChance and Excalibur.Silent.AirHitChance ~= WeaponSettings.MedAirHitChance then
+                                    Excalibur.Silent.AirHitChance = WeaponSettings.MedAirHitChance
+                                end
+                                if Excalibur.Silent.GunSettings.Methods.Prediction and Excalibur.Silent.Prediction ~= WeaponSettings.MedPrediction then
+                                    Excalibur.Silent.Prediction = WeaponSettings.ClosePrediction
+                                end
+                                if Excalibur.Silent.GunSettings.Methods.Fov and SilentFovRadius.Value ~= WeaponSettings.MedFov then
+                                    if Excalibur.Silent.GunSettings.Dynamic.Enabled then
+                                        local Create = Tween:Create(SilentFovRadius, TweenInfo.new(Excalibur.Silent.GunSettings.Dynamic.Time, Enum.EasingStyle[Excalibur.Silent.GunSettings.Dynamic.EasingStyle], Enum.EasingDirection[Excalibur.Silent.GunSettings.Dynamic.EasingDirection]), {Value = WeaponSettings.MedFov})
+                                        Create:Play()
+                                        Create.Completed:Wait()
+                                    else
+                                        SilentFovRadius.Value = WeaponSettings.MedFov
+                                    end
+                                end
+                            elseif Magnitude < Excalibur.Silent.GunSettings.Far_Activation then
+                                if Excalibur.Silent.GunSettings.Methods.Smoothness and Script.SavedValue.AimAssistSmoothX ~= WeaponSettings.FarSmoothness then
+                                    Excalibur.AimAssist.Smoothness_X = WeaponSettings.FarSmoothness
+                                    Excalibur.AimAssist.Smoothness_Y = WeaponSettings.FarSmoothness
+                                    Script.SavedValue.AimAssistSmoothX = WeaponSettings.FarSmoothness
+                                    Script.SavedValue.AimAssistSmoothY = WeaponSettings.FarSmoothness
+                                end
+                                if Excalibur.Silent.GunSettings.Methods.AirSmoothness and Excalibur.AimAssist.AirSmoothness_X ~= WeaponSettings.FarAirSmoothness then
+                                    Excalibur.AimAssist.AirSmoothness_X = WeaponSettings.FarAirSmoothness
+                                    Excalibur.AimAssist.AirSmoothness_Y = WeaponSettings.FarAirSmoothness
+                                end
+                                if Excalibur.Silent.GunSettings.Methods.HitChance and Excalibur.Silent.HitChance ~= WeaponSettings.FarHitChance then
+                                    Excalibur.Silent.HitChance = WeaponSettings.FarHitChance
+                                end
+                                if Excalibur.Silent.GunSettings.Methods.AirHitChance and Excalibur.Silent.AirHitChance ~= WeaponSettings.FarAirHitChance then
+                                    Excalibur.Silent.AirHitChance = WeaponSettings.FarAirHitChance
+                                end
+                                if Excalibur.Silent.GunSettings.Methods.Prediction and Excalibur.Silent.Prediction ~= WeaponSettings.FarPrediction then
+                                    Excalibur.Silent.Prediction = WeaponSettings.FarPrediction
+                                end
+                                if Excalibur.Silent.GunSettings.Methods.Fov and SilentFovRadius.Value ~= WeaponSettings.FarFov then
+                                    if Excalibur.Silent.GunSettings.Dynamic.Enabled then
+                                        local Create = Tween:Create(SilentFovRadius, TweenInfo.new(Excalibur.Silent.GunSettings.Dynamic.Time, Enum.EasingStyle[Excalibur.Silent.GunSettings.Dynamic.EasingStyle], Enum.EasingDirection[Excalibur.Silent.GunSettings.Dynamic.EasingDirection]), {Value = WeaponSettings.FarFov})
+                                        Create:Play()
+                                        Create.Completed:Wait()
+                                    else
+                                        SilentFovRadius.Value = WeaponSettings.FarFov
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end)
+        if not Succes then
+            if SavedError3 ~= Error then
+                SavedError3 = Error
+                Script.Functions.CreateNotification("Something went wrong! Sending the error to krafty.", Color3.fromRGB(0, 89, 255))
+                wait(0.5)
+                Script.Functions.CreateNotification(Error, Color3.fromRGB(0, 89, 255))
+            end
+        end
+        RS.Heartbeat:Wait()
+    end
+end))
+
+-- // Checks Everyone In The Server And Puts It In A Table
+for _, Plr in pairs(Players:GetPlayers()) do
+    coroutine.resume(coroutine.create(function()
+        if Plr ~= Client then
+            if Client:IsFriendsWith(Plr.UserId) then
+                table.insert(Script.Friends, Plr)
+            end
+            Script.Functions.CheckIfMod(Plr)
+            Script.Functions.NewPlayer(Plr)
+        end
+    end))
+end
+
+-- // Checks When Players Joins And Adds Them To A Table
+Players.PlayerAdded:Connect(function(Plr)
+    coroutine.resume(coroutine.create(function()
+        if Plr ~= Client then
+            if Client:IsFriendsWith(Plr.UserId) then
+                table.insert(Script.Friends, Plr)
+            end
+            Script.Functions.CheckIfMod(Plr)
+            Script.Functions.NewPlayer(Plr)
+        end
+    end))
+end)
+
+-- // Checks If A Player Left And Removes Them From The Table
+Players.PlayerRemoving:Connect(function(Plr)
+    if table.find(Script.Friends, Plr) then
+        table.remove(Script.Friends, FindPlayer)
+    end
+    if game.PlaceId == 2788229376 then
+        Script.Functions.RemoveTarget(Plr)
+    end
+    if table.find(Script.EspPlayers, Plr) then
+        for _, v in pairs(Script.EspPlayers[Plr]) do
+            if v ~= nil then
+                v:Remove()
+            end
+        end
+        table.remove(Script.EspPlayers, Plr)
+    end
+end)
+
+-- // The Functions For The MiniGui Commands. SHITTY
+if Excalibur.Options.MiniGui and rconsoleprint and rconsolename then
+    local MiniGuiChatCommands = {
+        clear = function()
+            rconsoleclear()
+        end,
+        
+        set = function(Path, Path2, Value)
+            local CurrentPath = Excalibur[Path]
+            if not CurrentPath or not CurrentPath[Path2] then return rconsoleprint("Error: Coudlnt Find Path\n") end
+            CurrentPath[Path2] = Value
+            rconsoleprint("> " .. tostring(Path2) .. " Is Now Set To: " .. tostring(Value) .. "\n")
+        end,
+
+        set2 = function(Path, Path2, Path3, Value)
+            local CurrentPath = Excalibur[Path]
+            local CurrentPath2 = CurrentPath[Path2]
+            if not CurrentPath or not CurrentPath2 or CurrentPath2[Path3] then return rconsoleprint("Error: Coudlnt Find Path\n") end
+            CurrentPath2[Path3] = Value
+            rconsoleprint("> " .. tostring(Path3) .. " Is Now Set To: " .. tostring(Value) .. "\n")
+        end,
+        
+        getplayers = function()
+            for _, v in pairs(Players:GetChildren()) do
+                if v ~= Client then
+                    rconsoleprint("> " .. tostring(v).."\n")
+                end
+            end
+        end,
+        
+        getplayersmagnitude = function()
+            for _, v in pairs(Players:GetChildren()) do
+                if v ~= Client and Script.Functions.Alive(v) and Script.Functions.Alive(Client) then
+                    local GetStuds = (Client.Character.HumanoidRootPart.Position - v.Character.HumanoidRootPart.Position).Magnitude
+                    rconsoleprint("> " .. tostring(v) .. " Is " .. GetStuds .. " Studs Away From You\n")
+                end
+            end
+        end,
+        
+        removeesp = function(Plr)
+            if table.find(Script.EspPlayers, Players[tostring(Plr)]) then
+                for i, v in pairs(Script.EspPlayers[Players[tostring(Plr)]]) do
+                    if v then
+                        v:Remove()
+                        rconsoleprint("> Successfully Removed ".. tostring(i) .." \n")
+                    else
+                        rconsoleprint("Error: Coudlnt Find Player \n")
+                    end
+                end
+                table.remove(Script.EspPlayers, Players[tostring(Plr)])
+            end
+        end,
+        
+        addesp = function(Plr)
+            if Players[tostring(Plr)] then
+                Script.Functions.NewPlayer(Players[tostring(Plr)])
+                rconsoleprint("> Successfully Added ".. tostring(Plr) .." \n")
+            else
+                rconsoleprint("Error: Coudlnt Find Player \n")
+            end
+        end,
+        
+        teleport = function(Plr)
+            if Script.Functions.Alive(Players[Plr]) and Script.Functions.Alive(Client) then
+                Client.Character.HumanoidRootPart.CFrame = Players[Plr].Character.HumanoidRootPart.CFrame
+                rconsoleprint("> Successfully Teleported ".. tostring(Plr) .." \n")
+            else
+                rconsoleprint("Error: Coudlnt Find Player \n")
+            end
+        end,
+
+        exec = function(Text)
+            loadstring(Text)
+        end,
+        
+        chat = function(Text)
+            if Text == ("false") then 
+                if getgenv().GetChat then 
+                    getgenv().GetChat:Disconnect() 
+                end 
+            end
+            if Text == ("true") then
+                local Event = game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents
+                getgenv().GetChat = Event.OnMessageDoneFiltering.OnClientEvent:Connect(function(object)
+                    rconsoleprint("> " .. string.format("%s : %s \n>", object.FromSpeaker, object.Message or ""))
+                end)
+            end
+        end,
+        
+        discord = function(Plr)
+            if setclipboard then
+                setclipboard("discord.gg/Excalibur")
+            end
+            if http_request or request or HttpPost or syn.request then
+                local Send = http_request or request or HttpPost or syn.request
+                local Table = {
+                    ["cmd"] = "INVITE_BROWSER",
+                    ["args"] = {["code"] = "Excalibur"},
+                    ["nonce"] = game:GetService("HttpService"):GenerateGUID(true)
+                }
+                Send({
+                    Url = "http://127.0.0.1:6463/rpc?v=1",
+                    Method = "POST",
+                    Headers = {
+                        ["Content-Type"] = "application/json",
+                        ["Origin"] = "https://discord.com"
+                    },
+                    Body = game:GetService("HttpService"):JSONEncode(Table)
+                })
+                rconsoleprint("> Successfully Invited You To The Discord\n")
+            end
+        end,
+        
+        help = function()
+            rconsoleprint("\n> List of available ChatCommands:\n\n")
+            rconsoleprint("> set(<Path> <Path2> <boolean> Or <string>): Sets The Table To The Value!\n")
+            rconsoleprint("> set2(<Path> <Path2> <Path3> <boolean> Or <string>): Sets The Table To The Value!\n")
+            rconsoleprint("> addesp(<playername>): WhiteLists The Player Esp\n")
+            rconsoleprint("> removeesp(<playername>): Remove The Player Esp\n")
+            rconsoleprint("> teleport(<playername>): Teleports You To The Player (RISKY)\n")
+            rconsoleprint("> getplayers: prints you an list of the players\n")
+            rconsoleprint("> getplayersmagnitude: Prints You An List Of The Players And How Long Away From You\n")
+            rconsoleprint("> clear: Clears The Console\n")
+            rconsoleprint("> discord: Gets Invites You To The Discord\n")
+            rconsoleprint("> exec(<string>): Executes The String\n")
+            rconsoleprint("> chat(<boolean>): Shows You People Chatting\n\n")
+        end,
+    }
+
+    -- // The Main Function For MiniGui
+    coroutine.resume(coroutine.create(function()
+        while wait(0.1) do
+            rconsolename("Excalibur MiniGui")
+            rconsoleprint("> ")
+            local line = rconsoleinput()
+            local Command, Args = string.match(line, "(%S+)%s*(.*)")
+
+            if Command == nil then
+                return
+            end
+
+            if type(MiniGuiChatCommands[Command]) ~= ("function") then
+                rconsoleprint("\nUnknown Command: " .. Command .. "\n")
+            else
+                local Splitted = string.split(line, " ")
+                if Splitted[2] ~= nil and Splitted[3] ~= nil and Splitted[4] ~= nil and Splitted[5] ~= nil then
+                    if Splitted[5] == ("false") then 
+                        Splitted[5] = false
+                    elseif Splitted[5] == ("true") then 
+                        Splitted[5] = true
+                    end
+
+                    local Succes, Error = pcall(MiniGuiChatCommands[Command], Splitted[2], Splitted[3], Splitted[4], Splitted[5])
+                    if not Succes then
+                        rconsoleprint("\nError: " .. Error .. "\n")
+                    end
+                elseif Splitted[2] ~= nil and Splitted[3] ~= nil and Splitted[4] ~= nil then
+                    if Splitted[4] == ("false") then 
+                        Splitted[4] = false
+                    elseif Splitted[4] == ("true") then 
+                        Splitted[4] = true
+                    end
+
+                    local Succes, Error = pcall(MiniGuiChatCommands[Command], Splitted[2], Splitted[3], Splitted[4])
+                    if not Succes then
+                        rconsoleprint("\nError: " .. Error .. "\n")
+                    end
+                else
+                    if Command ~= ("set") or Command ~= ("set2") then
+                        local Succes, Error = pcall(MiniGuiChatCommands[Command], Args)
+                        if not Succes then
+                            rconsoleprint("\nError: " .. Error .. "\n")
+                        end
+
+                        rconsoleprint("\nError: Command Error\n")
+                    end
+                end
+            end
+        end
+    end))
+end
+
+if Excalibur.Misc.AntiFling == true then
+local Services = setmetatable({}, {
+    __index = function(Self, Index)
+        local NewService = game:GetService(Index)
+        if NewService then
+            Self[Index] = NewService
+        end
+        return NewService
+})
+
+-- [ LocalPlayer ] --
+local LocalPlayer = Services.Players.LocalPlayer
+
+-- // Functions \\ --
+local function PlayerAdded(Player)
+    local Detected = false
+    local Character
+    local PrimaryPart
+
+    local function CharacterAdded(NewCharacter)
+        Character = NewCharacter
+        repeat
+            wait()
+            PrimaryPart = NewCharacter:FindFirstChild("HumanoidRootPart")
+        until PrimaryPart
+        Detected = false
+
+    CharacterAdded(Player.Character or Player.CharacterAdded:Wait())
+    Player.CharacterAdded:Connect(CharacterAdded)
+    Services.RunService.Heartbeat:Connect(function()
+        if Character and Character:IsDescendantOf(workspace) and PrimaryPart and PrimaryPart:IsDescendantOf(Character) then
+            if PrimaryPart.AssemblyAngularVelocity.Magnitude > 50 or PrimaryPart.AssemblyLinearVelocity.Magnitude > 100 then
+                if not Detected then
+					if Excalibur.Options.Notifications then
+						Script.Functions.CreateNotification("Flung exploit detected.", Color3.fromRGB(0, 89, 255))
+					end
+                end
+                Detected = true
+                for _, v in ipairs(Character:GetDescendants()) do
+                    if v:IsA("BasePart") then
+                        v.CanCollide = false
+                        v.AssemblyAngularVelocity = Vector3.new(0, 0, 0)
+                        v.AssemblyLinearVelocity = Vector3.new(0, 0, 0)
+                        v.CustomPhysicalProperties = PhysicalProperties.new(0, 0, 0)
+                    end
+                end
+                PrimaryPart.CanCollide = false
+                PrimaryPart.AssemblyAngularVelocity = Vector3.new(0, 0, 0)
+                PrimaryPart.AssemblyLinearVelocity = Vector3.new(0, 0, 0)
+                PrimaryPart.CustomPhysicalProperties = PhysicalProperties.new(0, 0, 0)
+            end
+        end
+
+-- // Event Listeners \\ --
+for _, v in ipairs(Services.Players:GetPlayers()) do
+    if v ~= LocalPlayer then
+        PlayerAdded(v)
+    end
+end
+Services.Players.PlayerAdded:Connect(PlayerAdded)
+
+local LastPosition = nil
+Services.RunService.Heartbeat:Connect(function()
+    pcall(function()
+        local PrimaryPart = LocalPlayer.Character.PrimaryPart
+        if PrimaryPart.AssemblyLinearVelocity.Magnitude > 250 or PrimaryPart.AssemblyAngularVelocity.Magnitude > 250 then
+            PrimaryPart.AssemblyAngularVelocity = Vector3.new(0, 0, 0)
+            PrimaryPart.AssemblyLinearVelocity = Vector3.new(0, 0, 0)
+            PrimaryPart.CFrame = LastPosition
+
+			if Excalibur.Options.Notifications then
+				Script.Functions.CreateNotification("You were flung, fixing velocity.", Color3.fromRGB(0, 89, 255))
+			end
+        elseif PrimaryPart.AssemblyLinearVelocity.Magnitude < 50 or PrimaryPart.AssemblyAngularVelocity.Magnitude > 50 then
+            LastPosition = PrimaryPart.CFrame
+        end
+    end)
+end)
+
+
+-- // Casino, Theater, TacoHamburger, Kicks, Fitness, UphillRR, Park, Basketball, Boxing, Uphilltaco, MediumArmor (Uphill), BankVault, DB, Rev, AdminBase, SchoolCafe, UphillGuns
+if Excalibur.Teleport.Enabled and Uis.IsKeyDown(Enum.KeyCode[Excalibur.Teleport.Key]) then
+	loadstring(game:HttpGet("https://github.com/bestdhscriptsinnawhilefrfrf/bestdhscriptsinnawhilefrfrf/blob/main/open/acbypass"))() -- // For safety
+	if Excalibur.Teleport.Where == "Casino" then
+		Client.Character.HumanoidRootPart.CFrame =  CFrame.new(-864.485229, 21.8463135, -146.982574, 0.999269962, -2.03646113e-08, -0.0382045135, 2.040826e-08, 1, 7.52518992e-10, 0.0382045135, -1.53165725e-09, 0.999269962)
+	elseif Excalibur.Teleport.Where == "Theater" then
+		Client.Character.HumanoidRootPart.CFrame = CFrame.new(-1006.29266, 25.1963406, -114.622444, -0.99899739, -6.72694611e-09, 0.0447688363, -1.77766746e-09, 1, 1.10591685e-07, -0.0447688363, 1.10401217e-07, -0.99899739)
+	elseif Excalibur.Teleport.Where == "TacoHamburger" then
+		Client.Character.HumanoidRootPart.CFrame = CFrame.new(-281.66864, 21.8513165, -802.096741, -0.919341505, -2.4490705e-09, 0.393460572, -8.42798809e-09, 1, -1.34680054e-08, -0.393460572, -1.56977773e-08, -0.919341505)
+	elseif Excalibur.Teleport.Where == "Kicks" then
+		Client.Character.HumanoidRootPart.CFrame = CFrame.new(-193.104004, 21.8513165, -409.946167, -0.0214972366, 4.84235301e-08, -0.999768913, -8.93365382e-08, 1, 5.03556556e-08, 0.999768913, 9.03984017e-08, -0.0214972366)
+	elseif Excalibur.Teleport.Where == "Fitness" then
+		Client.Character.HumanoidRootPart.CFrame = CFrame.new(-74.7247238, 21.8513165, -596.211914, -0.99918294, -2.28898944e-08, 0.0404154137, -2.32297097e-08, 1, -7.93842592e-09, -0.0404154137, -8.87077878e-09, -0.99918294)
+	elseif Excalibur.Teleport.Where == "UphillRR" then
+		Client.Character.HumanoidRootPart.CFrame = CFrame.new(378.623535, 48.5963364, -325.38382, 0.998572648, -2.88867774e-08, -0.0534098633, 3.03402352e-08, 1, 2.64024909e-08, 0.0534098633, -2.79852745e-08, 0.998572648)
+	elseif Excalibur.Teleport.Where == "Park" then
+		Client.Character.HumanoidRootPart.CFrame = CFrame.new(-792.462585, 26.0626793, -477.651215, -0.99968344, -8.28280022e-09, 0.0251597986, -7.98621969e-09, 1, 1.18883303e-08, -0.0251597986, 1.16836354e-08, -0.99968344)
+	elseif Excalibur.Teleport.Where == "Basketball" then
+		Client.Character.HumanoidRootPart.CFrame = CFrame.new(-933.246277, 22.096138, -494.462799, 0.985666096, 2.20171117e-08, 0.168707758, -8.35223624e-09, 1, -8.17069434e-08, -0.168707758, 7.91266785e-08, 0.985666096)
+	elseif Excalibur.Teleport.Where == "Boxing" then
+		Client.Character.HumanoidRootPart.CFrame = CFrame.new(-199.286667, 21.8513184, -1128.3623, -0.763684392, 7.98454067e-08, -0.645589769, 3.58925867e-08, 1, 8.12199943e-08, 0.645589769, 3.88545516e-08, -0.763684392)
+	elseif Excalibur.Teleport.Where == "UphillTaco" then
+		Client.Character.HumanoidRootPart.CFrame = CFrame.new(584.756409, 51.1577148, -478.677948, 0.435121864, -5.118729e-09, 0.900371552, 8.14396657e-08, 1, -3.36721548e-08, -0.900371552, 8.79774547e-08, 0.435121864)
+	elseif Excalibur.Teleport.Where == "MediumArmor" then
+		Client.Character.HumanoidRootPart.CFrame = CFrame.new(530.20813, 50.4235764, -636.450073, -0.127223879, -5.63823583e-08, 0.991874039, -6.59033077e-08, 1, 4.83911116e-08, -0.991874039, -5.92112706e-08, -0.127223879)
+	elseif Excalibur.Teleport.Where == "BankVault" then
+		Client.Character.HumanoidRootPart.CFrame = CFrame.new(-503.26889, 23.2529964, -285.131378, 0.0603336692, 1.06490397e-07, -0.998178244, 9.70841718e-09, 1, 1.07271561e-07, 0.998178244, -1.61628186e-08, 0.0603336692)
+	elseif Excalibur.Teleport.Where == "DB" then
+		Client.Character.HumanoidRootPart.CFrame = CFrame.new(-1041.6593, 21.8463135, -263.642456, -0.495436817, -1.4209208e-08, 0.868643999, -1.25308852e-09, 1, 1.56432112e-08, -0.868643999, 6.66173472e-09, -0.495436817)
+	elseif Excalibur.Teleport.Where == "Rev" then
+		Client.Character.HumanoidRootPart.CFrame = CFrame.new(-641.13623, 21.8463135, -124.459846, 0.998984456, -1.98905392e-10, -0.0450559184, 1.81357623e-10, 1, -3.93554023e-10, 0.0450559184, 3.84983129e-10, 0.998984456)
+	elseif Excalibur.Teleport.Where == "AdminBase" then
+		Client.Character.HumanoidRootPart.CFrame = CFrame.new(-629.506531, -39.5578957, -886.225769, -0.000592476455, 9.89941782e-08, 0.999999821, -1.26496702e-09, 1, -9.89949385e-08, -0.999999821, -1.32361888e-09, -0.000592476455)
+	elseif Excalibur.Teleport.Where == "SchoolCafe" then
+		Client.Character.HumanoidRootPart.CFrame = CFrame.new(-587.597351, 21.9713135, 290.669678, 0.999434352, -7.08942878e-08, 0.0336292982, 7.11212849e-08, 1, -5.55382096e-09, -0.0336292982, 7.94243871e-09, 0.999434352)
+	elseif Excalibur.Teleport.Where == "UphillGuns" then
+		Client.Character.HumanoidRootPart.CFrame = CFrame.new(481.295166, 48.1013145, -609.212402, -0.993574321, 2.26258727e-08, -0.113181539, 2.77346661e-08, 1, -4.35634604e-08, 0.113181539, -4.64225884e-08, -0.993574321)
+	end
+end
+
+-- // Sends Information For Basic Stuff
+if Excalibur.Options.GetInfo then
+    if GetTime then
+        Script.Functions.CreateNotification("Loaded script in: " .. string.format("%.".."4".."f", os.clock() - GetTime) .. " seconds", Color3.fromRGB(0, 89, 255))
+		Script.Functions.CreateNotification("Discord ID: " .. LRM_LinkedDiscordID, Color3.fromRGB(0, 89, 255))
+		Script.Functions.CreateNotification( .. LRM_ScriptName .. " has been loaded successfully!", Color3.fromRGB(0, 89, 255))
+		Script.Functions.CreateNotification("Total executions: " .. LRM_TotalExecutions .. " in total", Color3.fromRGB(0, 89, 255))
+		Script.Functions.CreateNotification("Time left: " .. LRM_SecondsLeft / 86400 .. " days", Color3.fromRGB(0, 89, 255))
+		Script.Functions.CreateNotification("EXCALIBUR ON TOP - krafty", Color3.fromRGB(0, 89, 255))
+    end
+	if massa == true then
+		Script.Functions.CreateNotification("MASSA MODE IS ENABLED MASSA", Color3.fromRGB(0, 89, 255))
+		if not isfolder("Excalibur/" .. game.PlaceId .. "/youismassa") then
+			makefolder("Excalibur/" .. game.PlaceId .. "/youismassa")
+		end
+		writefile("Excalibur/" .. game.PlaceId .. "/youismassa/himassa.lua", "Hi massa, you are massa, massa.")
+	end
+end
+
+getgenv().ExcaliburLoaded = true
